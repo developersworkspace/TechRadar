@@ -271,7 +271,7 @@ export class TechRadarCompoment {
       .text((d: any, i: number) => {
         return d.name;
       })
-      .attr('data-id', (d, i) => {
+      .attr('id', (d, i) => {
         return 'item-' + d.id;
       });
 
