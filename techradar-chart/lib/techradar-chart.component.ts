@@ -301,7 +301,7 @@ export class TechRadarCompoment {
       .on('mouseover', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '7');
         d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+        d3.select('#item-' + d.id + '.label').attr('fill', '#1ebccd');
       })
       .on('mouseout', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '4');
@@ -331,7 +331,7 @@ export class TechRadarCompoment {
       .on('mouseover', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '7');
         d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+        d3.select('#item-' + d.id + '.label').attr('fill', '#86b782');
       })
       .on('mouseout', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '4');
@@ -361,7 +361,7 @@ export class TechRadarCompoment {
       .on('mouseover', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '7');
         d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+        d3.select('#item-' + d.id + '.label').attr('fill', '#f38a3e');
       })
       .on('mouseout', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '4');
@@ -392,7 +392,7 @@ export class TechRadarCompoment {
       .on('mouseover', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '7');
         d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+        d3.select('#item-' + d.id + '.label').attr('fill', '#b32059');
       })
       .on('mouseout', function (d, i) {
         d3.select('#item-' + d.id + '.point').attr('r', '4');
