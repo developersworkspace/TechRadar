@@ -10,7 +10,7 @@ export class TechRadarCompoment {
 
   @Input()
   public data: any = null;
-  
+
   private dataset: any = null;
   private svg: any = null;
   private radius: number;
@@ -19,6 +19,7 @@ export class TechRadarCompoment {
   private scale: any;
 
   private isInitialized = false;
+  private doUpdateChart = true;
 
   constructor(private elementRef: ElementRef) {
     this.radius = 250;
@@ -28,26 +29,35 @@ export class TechRadarCompoment {
   }
 
 
- ngOnChanges(changes: any) {
-    
+  ngOnChanges(changes: any) {
+
     if (!this.isInitialized) {
       this.initializeChart();
     }
 
     this.dataset = changes.data.currentValue;
+
+    this.doUpdateChart = true;
   }
 
 
   ngAfterViewInit() {
-      
+
   }
 
   ngDoCheck() {
-     this.updateChart();
-     this.updateLegend();
+
+    if (this.doUpdateChart) {
+      if (this.dataset != null) {
+        this.updateChart();
+        this.updateLegend();
+      }
+
+      this.doUpdateChart = false;
+    }
   }
 
- 
+
 
   initializeChart() {
 
@@ -164,6 +174,19 @@ export class TechRadarCompoment {
         }
 
         throw new Error('Invalid quadrant');
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
+      })
+      .on('mouseover', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '7');
+        d3.select('#item-' + d.id + '.icon').attr('r', '7');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      })
+      .on('mouseout', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '4');
+        d3.select('#item-' + d.id + '.icon').attr('r', '4');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
       });
   }
 
@@ -174,70 +197,82 @@ export class TechRadarCompoment {
       .remove();
 
     // Draw labels for quadrant 1
-    this.svg.selectAll('.labels.quadrant1')
+    this.svg.selectAll('.label.quadrant1')
       .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
       .enter()
       .append('text')
-      .attr('class', 'labels quadrant1')
+      .attr('class', 'label quadrant1')
       .attr('x', (d: any, i: number) => {
-        return 15;
+        return 25;
       })
       .attr('y', (d: any, i: number) => {
         return (18 * i) + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
       });
 
 
 
     // Draw labels for quadrant 2
-    this.svg.selectAll('.labels.quadrant2')
+    this.svg.selectAll('.label.quadrant2')
       .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[1]))
       .enter()
       .append('text')
-      .attr('class', 'labels quadrant2')
+      .attr('class', 'label quadrant2')
       .attr('x', (d: any, i: number) => {
-        return 15 + this.margin.left + this.width;
+        return 25 + this.margin.left + this.width;
       })
       .attr('y', (d: any, i: number) => {
         return (18 * i) + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
       });
 
 
     // Draw labels for quadrant 3
-    this.svg.selectAll('.labels.quadrant3')
+    this.svg.selectAll('.label.quadrant3')
       .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[2]))
       .enter()
       .append('text')
-      .attr('class', 'labels quadrant3')
+      .attr('class', 'label quadrant3')
       .attr('x', (d: any, i: number) => {
-        return 15;
+        return 25;
       })
       .attr('y', (d: any, i: number) => {
         return (18 * i) + this.margin.top + this.radius + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
       });
 
     // Draw labels for quadrant 4
-    this.svg.selectAll('.labels.quadrant4')
+    this.svg.selectAll('.label.quadrant4')
       .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[3]))
       .enter()
       .append('text')
-      .attr('class', 'labels quadrant4')
+      .attr('class', 'label quadrant4')
       .attr('x', (d: any, i: number) => {
-        return 15 + this.margin.left + this.width;
+        return 25 + this.margin.left + this.width;
       })
       .attr('y', (d: any, i: number) => {
         return (18 * i) + this.margin.top + this.radius + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
+      })
+      .attr('data-id', (d, i) => {
+        return 'item-' + d.id;
       });
 
     // Remove all icons
@@ -251,7 +286,7 @@ export class TechRadarCompoment {
       .append('circle')
       .attr('class', 'icon quadrant1')
       .attr('cx', (d: any, i: number) => {
-        return 5;
+        return 10;
       })
       .attr('cy', (d: any, i: number) => {
         return (18 * i) + this.margin.top - 5;
@@ -259,6 +294,19 @@ export class TechRadarCompoment {
       .attr('r', 4)
       .attr('fill', (d: any) => {
         return '#1ebccd';
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
+      })
+      .on('mouseover', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '7');
+        d3.select('#item-' + d.id + '.icon').attr('r', '7');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      })
+      .on('mouseout', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '4');
+        d3.select('#item-' + d.id + '.icon').attr('r', '4');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
       });
 
     // Draw icons for quadrant 2
@@ -268,14 +316,27 @@ export class TechRadarCompoment {
       .append('circle')
       .attr('class', 'icon quadrant2')
       .attr('cx', (d: any, i: number) => {
-        return this.margin.left + this.width + 5;
+        return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top - 5;
+        return (18 * i) + this.margin.top - 10;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
         return '#86b782';
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
+      })
+      .on('mouseover', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '7');
+        d3.select('#item-' + d.id + '.icon').attr('r', '7');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      })
+      .on('mouseout', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '4');
+        d3.select('#item-' + d.id + '.icon').attr('r', '4');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
       });
 
     // Draw icons for quadrant 3
@@ -285,7 +346,7 @@ export class TechRadarCompoment {
       .append('circle')
       .attr('class', 'icon quadrant3')
       .attr('cx', (d: any, i: number) => {
-        return 5;
+        return 10;
       })
       .attr('cy', (d: any, i: number) => {
         return (18 * i) + this.margin.top + this.radius + this.margin.top - 5;
@@ -293,6 +354,19 @@ export class TechRadarCompoment {
       .attr('r', 4)
       .attr('fill', (d: any) => {
         return '#f38a3e';
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
+      })
+      .on('mouseover', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '7');
+        d3.select('#item-' + d.id + '.icon').attr('r', '7');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      })
+      .on('mouseout', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '4');
+        d3.select('#item-' + d.id + '.icon').attr('r', '4');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
       });
 
 
@@ -303,14 +377,27 @@ export class TechRadarCompoment {
       .append('circle')
       .attr('class', 'icon quadrant4')
       .attr('cx', (d: any, i: number) => {
-        return this.margin.left + this.width + 5;
+        return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top - 10;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
         return '#b32059';
+      })
+      .attr('id', (d, i) => {
+        return 'item-' + d.id;
+      })
+      .on('mouseover', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '7');
+        d3.select('#item-' + d.id + '.icon').attr('r', '7');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      })
+      .on('mouseout', function (d, i) {
+        d3.select('#item-' + d.id + '.point').attr('r', '4');
+        d3.select('#item-' + d.id + '.icon').attr('r', '4');
+        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
       });
 
   }

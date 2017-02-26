@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -22,9 +23,11 @@ export class AppComponent {
     this.data.quadrants.push("Platforms");
     this.data.quadrants.push("Languages and Frameworks");
 
-    setInterval(() => {
-      this.updateItems();
-    }, 1000);
+    // setInterval(() => {
+    //   this.updateItems();
+    // }, 1000);
+
+    this.updateItems();
   }
 
   updateItems() {
@@ -54,6 +57,7 @@ export class AppComponent {
       let name = randomData[Math.floor(Math.random() * randomData.length)];
 
       this.data.items.push({
+        id: uuid.v4(),
         name: name,
         quadrant: "Techniques",
         value: Math.random() * 100,
@@ -68,6 +72,7 @@ export class AppComponent {
       let name = randomData[Math.floor(Math.random() * randomData.length)];
 
       this.data.items.push({
+        id: uuid.v4(),
         name: name,
         quadrant: "Tools",
         value: Math.random() * 100,
@@ -82,6 +87,7 @@ export class AppComponent {
       let name = randomData[Math.floor(Math.random() * randomData.length)];
 
       this.data.items.push({
+        id: uuid.v4(),
         name: name,
         quadrant: "Platforms",
         value: Math.random() * 100,
@@ -96,6 +102,7 @@ export class AppComponent {
       let name = randomData[Math.floor(Math.random() * randomData.length)];
 
       this.data.items.push({
+        id: uuid.v4(),
         name: name,
         quadrant: "Languages and Frameworks",
         value: Math.random() * 100,

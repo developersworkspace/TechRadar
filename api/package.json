@@ -4,8 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs": "apidoc -i ./src/ -o docs/",
+    "build": "gulp build",
+    "start": "gulp ts & node ./src/app.js"
   },
   "author": "Barend Erasmus",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cors": "^2.8.1",
+    "express": "^4.14.1",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-typescript": "^3.1.5",
+    "typescript": "^2.2.1"
+  }
 }
