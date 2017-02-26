@@ -1,6 +1,6 @@
 {
   "name": "techradar-chart",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Tech Radar Chart component",
   "main": "index.ts",
   "scripts": {
@@ -15,5 +15,13 @@
     "d3": "^4.5.0",
     "rxjs": "^5.1.1",
     "zone.js": "^0.7.7"
+  },
+  "homepage": "https://github.com/developersworkspace/TechRadar/techradar-chart#readme",
+  "bugs": {
+    "url": "https://github.com/developersworkspace/TechRadar/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developersworkspace/TechRadar.git"
   }
 }
