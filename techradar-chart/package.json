@@ -1,0 +1,19 @@
+{
+  "name": "techradar-chart",
+  "version": "1.0.1",
+  "description": "Tech Radar Chart component",
+  "main": "index.ts",
+  "scripts": {
+   
+  },
+  "author": "Barend Erasmus",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/core": "^2.4.7",
+    "@types/d3": "^4.5.0",
+    "angular": "^1.6.2",
+    "d3": "^4.5.0",
+    "rxjs": "^5.1.1",
+    "zone.js": "^0.7.7"
+  }
+}

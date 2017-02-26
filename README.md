@@ -1,5 +1,7 @@
 # TechRadar
 
+![Screenshot](https://github.com/developersworkspace/TechRadar/blob/master/screenshots/one.png?raw=true)
+
 ## Installation
 
 ### One-line Install

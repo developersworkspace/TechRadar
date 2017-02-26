@@ -1,0 +1,1 @@
+export {TechRadarCompoment as TechRadarCompoment} from "./lib/techradar-chart.component";
