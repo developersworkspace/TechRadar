@@ -2,12 +2,6 @@
 
 ![Screenshot](https://github.com/developersworkspace/TechRadar/blob/master/screenshots/one.png?raw=true)
 
-## Installation
-
-### One-line Install
-
-`bash <(curl -s https://raw.githubusercontent.com/developersworkspace/TechRadar/master/install.sh)`
-
 The MIT License (MIT)
 =====================
 

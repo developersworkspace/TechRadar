@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -8,41 +8,46 @@ import * as d3 from 'd3';
 })
 export class TechRadarCompoment {
 
+  @Input()
   public data: any = null;
+  
+  private dataset: any = null;
   private svg: any = null;
   private radius: number;
   private width: number;
   private margin: any;
   private scale: any;
 
+  private isInitialized = false;
+
   constructor(private elementRef: ElementRef) {
     this.radius = 250;
     this.margin = { top: 20, right: 150, bottom: 20, left: 150 };
     this.scale = d3.scaleLinear().range([0, this.radius]).domain([0, 100]);
     this.width = this.radius * 2;
-
-    this.data = {
-      quadrants: [],
-      items: []
-    };
-
-    this.data.quadrants.push("Techniques");
-    this.data.quadrants.push("Tools");
-    this.data.quadrants.push("Platforms");
-    this.data.quadrants.push("Languages and Frameworks");
   }
+
+
+ ngOnChanges(changes: any) {
+    
+    if (!this.isInitialized) {
+      this.initializeChart();
+    }
+
+    this.dataset = changes.data.currentValue;
+  }
+
 
   ngAfterViewInit() {
-
-    //["Adopt", "Trial", "Assess", "Hold"]
-
-    this.updateItems();
-    this.initializeChart();
-    this.updateChart();
-    this.updateLegend();
-
-
+      
   }
+
+  ngDoCheck() {
+     this.updateChart();
+     this.updateLegend();
+  }
+
+ 
 
   initializeChart() {
 
@@ -110,7 +115,7 @@ export class TechRadarCompoment {
 
     // Draw points
     this.svg.selectAll('.point')
-      .data(this.data.items)
+      .data(this.dataset.items)
       .enter()
       .append('circle')
       .attr('class', 'point')
@@ -118,13 +123,13 @@ export class TechRadarCompoment {
 
         let value = Math.cos(this.toRadians(d.angle)) * this.scale(d.value);
 
-        if (this.data.quadrants.indexOf(d.quadrant) == 0) {
+        if (this.dataset.quadrants.indexOf(d.quadrant) == 0) {
           return this.radius - value + this.margin.left;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 1) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 1) {
           return this.radius + value + this.margin.left;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 2) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 2) {
           return this.radius - value + this.margin.left;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 3) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 3) {
           return this.radius + value + this.margin.left;
         }
 
@@ -134,13 +139,13 @@ export class TechRadarCompoment {
 
         let value = Math.sin(this.toRadians(d.angle)) * this.scale(d.value);
 
-        if (this.data.quadrants.indexOf(d.quadrant) == 0) {
+        if (this.dataset.quadrants.indexOf(d.quadrant) == 0) {
           return this.radius - value + this.margin.top;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 1) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 1) {
           return this.radius - value + this.margin.top;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 2) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 2) {
           return this.radius + value + this.margin.top;
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 3) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 3) {
           return this.radius + value + this.margin.top;
         }
 
@@ -148,13 +153,13 @@ export class TechRadarCompoment {
       })
       .attr('r', 5)
       .attr('fill', (d: any) => {
-        if (this.data.quadrants.indexOf(d.quadrant) == 0) {
+        if (this.dataset.quadrants.indexOf(d.quadrant) == 0) {
           return '#1ebccd';
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 1) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 1) {
           return '#86b782';
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 2) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 2) {
           return '#f38a3e';
-        } else if (this.data.quadrants.indexOf(d.quadrant) == 3) {
+        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 3) {
           return '#b32059';
         }
 
@@ -170,7 +175,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 1
     this.svg.selectAll('.labels.quadrant1')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[0]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
       .enter()
       .append('text')
       .attr('class', 'labels quadrant1')
@@ -188,7 +193,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 2
     this.svg.selectAll('.labels.quadrant2')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[1]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[1]))
       .enter()
       .append('text')
       .attr('class', 'labels quadrant2')
@@ -205,7 +210,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 3
     this.svg.selectAll('.labels.quadrant3')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[2]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[2]))
       .enter()
       .append('text')
       .attr('class', 'labels quadrant3')
@@ -221,7 +226,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 4
     this.svg.selectAll('.labels.quadrant4')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[3]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[3]))
       .enter()
       .append('text')
       .attr('class', 'labels quadrant4')
@@ -241,7 +246,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 1
     this.svg.selectAll('.icon.quadrant1')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[0]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant1')
@@ -258,7 +263,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 2
     this.svg.selectAll('.icon.quadrant2')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[1]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[1]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant2')
@@ -275,7 +280,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 3
     this.svg.selectAll('.icon.quadrant3')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[2]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[2]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant3')
@@ -293,7 +298,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 4
     this.svg.selectAll('.icon.quadrant4')
-      .data(this.data.items.filter(x => x.quadrant == this.data.quadrants[3]))
+      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[3]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant4')
@@ -308,83 +313,6 @@ export class TechRadarCompoment {
         return '#b32059';
       });
 
-  }
-
-  updateItems() {
-
-    let numberOfItems = 20;
-
-    let randomData = [
-      'Redis',
-      'Mongo',
-      'CouchDB',
-      'SQL',
-      'Micro Services',
-      'Node JS',
-      'Angular 2',
-      'C#',
-      'D3',
-      'Cloud',
-      'Automation',
-      'Continous Delivery'
-    ];
-    this.data.items = [];
-
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        name: name,
-        quadrant: "Techniques",
-        value: Math.random() * 100,
-        angle: angle
-      });
-    }
-
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        name: name,
-        quadrant: "Tools",
-        value: Math.random() * 100,
-        angle: angle
-      });
-    }
-
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        name: name,
-        quadrant: "Platforms",
-        value: Math.random() * 100,
-        angle: angle
-      });
-    }
-
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        name: name,
-        quadrant: "Languages and Frameworks",
-        value: Math.random() * 100,
-        angle: angle
-      });
-    }
   }
 
   toDegrees(angle: number) {
