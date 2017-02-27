@@ -1,4 +1,10 @@
 <h1>
   {{title}}
 </h1>
-<techradar-chart [data]="data" [radius]="400"></techradar-chart>
+<techradar-chart [data]="data" [radius]="300" (onHover)="onHover($event)" (onMouseLeave)="onMouseLeave($event)"></techradar-chart>
+<div *ngIf="selectedItem != null">
+  <h4>{{selectedItem.name}}</h4>
+  <p>
+    {{selectedItem.description}}
+  </p>
+</div>

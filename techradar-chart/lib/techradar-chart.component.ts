@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -12,6 +12,13 @@ export class TechRadarCompoment {
 
   @Input()
   public radius: number = 300;
+
+
+  @Output() 
+  onHover = new EventEmitter();
+
+  @Output() 
+  onMouseLeave = new EventEmitter();
 
   private dataset: any = null;
   private svg: any = null;
@@ -445,6 +452,8 @@ export class TechRadarCompoment {
       return;
     }
 
+    this.onHover.emit(item);
+
     d3.select('#item-' + item.id + '.point').attr('r', '7');
     d3.select('#item-' + item.id + '.icon').attr('r', '7');
     d3.select('#item-' + item.id + '.label').attr('fill', this.findQuadrantColor(item));
@@ -455,6 +464,8 @@ export class TechRadarCompoment {
     if (item == null) {
       return;
     }
+
+    this.onMouseLeave.emit(item);
 
     d3.select('#item-' + item.id + '.point').attr('r', '4');
     d3.select('#item-' + item.id + '.icon').attr('r', '4');

@@ -5,7 +5,8 @@ Example Usage:
 ```html
 <techradar-chart 
     [data]="data"
-    [radius]="400">
+    [radius]="400"
+    (mouseenter)="onHover($event)">
 </techradar-chart>
 ```
 
