@@ -14,13 +14,13 @@ export class TechRadarCompoment {
   public radius: number = 300;
 
 
-  @Output() 
+  @Output()
   onHover = new EventEmitter();
 
-  @Output() 
+  @Output()
   onMouseLeave = new EventEmitter();
 
-  @Output() 
+  @Output()
   onClick = new EventEmitter();
 
   private dataset: any = null;
@@ -268,6 +268,41 @@ export class TechRadarCompoment {
       return;
     }
 
+
+    this.svg
+      .append('text')
+      .attr('class', 'header-label')
+      .attr('x', 5)
+      .attr('y', this.margin.top)
+      .attr('font-size', '1.2em')
+      .text(this.dataset.quadrants[0]);
+
+    this.svg
+      .append('text')
+      .attr('class', 'header-label')
+      .attr('x', 5 + this.margin.left + this.width)
+      .attr('y', this.margin.top)
+      .attr('font-size', '1.2em')
+      .text(this.dataset.quadrants[1]);
+
+
+    this.svg
+      .append('text')
+      .attr('class', 'header-label')
+      .attr('x', 5)
+      .attr('y', this.margin.top + this.radius + this.margin.top)
+      .attr('font-size', '1.2em')
+      .text(this.dataset.quadrants[2]);
+
+    this.svg
+      .append('text')
+      .attr('class', 'header-label')
+      .attr('x', 5 + this.margin.left + this.width)
+      .attr('y', this.margin.top + this.radius + this.margin.top)
+      .attr('font-size', '1.2em')
+      .text(this.dataset.quadrants[3]);
+
+
     // Draw labels for quadrant 1
     this.svg.selectAll('.label.quadrant1')
       .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
@@ -278,7 +313,7 @@ export class TechRadarCompoment {
         return 25;
       })
       .attr('y', (d: any, i: number) => {
-        return (18 * i) + this.margin.top;
+        return (18 * i) + this.margin.top + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
@@ -297,7 +332,7 @@ export class TechRadarCompoment {
         return 25 + this.margin.left + this.width;
       })
       .attr('y', (d: any, i: number) => {
-        return (18 * i) + this.margin.top;
+        return (18 * i) + this.margin.top + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
@@ -316,7 +351,7 @@ export class TechRadarCompoment {
         return 25;
       })
       .attr('y', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
@@ -335,7 +370,7 @@ export class TechRadarCompoment {
         return 25 + this.margin.left + this.width;
       })
       .attr('y', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top + this.margin.top;
       })
       .text((d: any, i: number) => {
         return d.name;
@@ -355,7 +390,7 @@ export class TechRadarCompoment {
         return 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top - 5;
+        return (18 * i) + this.margin.top - 5 + this.margin.top;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
@@ -384,7 +419,7 @@ export class TechRadarCompoment {
         return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top - 5;
+        return (18 * i) + this.margin.top - 5 + this.margin.top;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
@@ -413,7 +448,7 @@ export class TechRadarCompoment {
         return 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5 + this.margin.top;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
@@ -443,7 +478,7 @@ export class TechRadarCompoment {
         return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5 + this.margin.top;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
