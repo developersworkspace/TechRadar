@@ -56,7 +56,7 @@ export class TechRadarCompoment {
   private drawTechRadar() {
 
     this.margin = { top: 20, right: 250, bottom: 20, left: 250 };
-    this.scale = d3.scaleLinear().range([0, this.radius]).domain([0, 100]);
+    this.scale = d3.scaleLinear().range([this.radius, 0]).domain([0, 100]);
     this.width = this.radius * 2;
 
     this.svg = d3.select(this.elementRef.nativeElement).select('svg');
@@ -110,11 +110,11 @@ export class TechRadarCompoment {
       .attr('class', 'boundary-line')
       .attr('cx', this.radius + this.margin.left)
       .attr('cy', this.radius + this.margin.top)
-      .attr('r', this.scale(25))
+      .attr('r', this.scale(75))
       .attr('fill', 'none')
       .attr('stroke', 'black');
 
-    // Draw 'Trial' boundary
+    // Draw 'Trail' boundary
     this.svg.append('circle')
       .attr('class', 'boundary-line')
       .attr('cx', this.radius + this.margin.left)
@@ -128,7 +128,7 @@ export class TechRadarCompoment {
       .attr('class', 'boundary-line')
       .attr('cx', this.radius + this.margin.left)
       .attr('cy', this.radius + this.margin.top)
-      .attr('r', this.scale(75))
+      .attr('r', this.scale(25))
       .attr('fill', 'none')
       .attr('stroke', 'black');
 
@@ -137,7 +137,7 @@ export class TechRadarCompoment {
       .attr('class', 'boundary-line')
       .attr('cx', this.radius + this.margin.left)
       .attr('cy', this.radius + this.margin.top)
-      .attr('r', this.scale(100))
+      .attr('r', this.scale(0))
       .attr('fill', 'none')
       .attr('stroke', 'black');
   }
@@ -152,7 +152,7 @@ export class TechRadarCompoment {
     this.svg.append('text')
       .attr('class', 'boundary-text')
       .attr('x', this.radius + this.margin.left + 5)
-      .attr('y', this.radius + this.margin.top - this.scale(25) - 5)
+      .attr('y', this.radius + this.margin.top - this.scale(75) - 5)
       .text('Adopt');
 
 
@@ -167,14 +167,14 @@ export class TechRadarCompoment {
     this.svg.append('text')
       .attr('class', 'boundary-text')
       .attr('x', this.radius + this.margin.left + 5)
-      .attr('y', this.radius + this.margin.top - this.scale(75) - 5)
+      .attr('y', this.radius + this.margin.top - this.scale(25) - 5)
       .text('Assess');
 
     // Draw 'Hold' boundary text
     this.svg.append('text')
       .attr('class', 'boundary-text')
       .attr('x', this.radius + this.margin.left + 5)
-      .attr('y', this.radius + this.margin.top - this.scale(100) - 5)
+      .attr('y', this.radius + this.margin.top - this.scale(0) - 5)
       .text('Hold');
   }
 
