@@ -17,8 +17,8 @@ Where:
         "id": "1ec46d50-fcc0-11e6-bc64-92361f002671",
         "name": "Redis",
         "quadrant": "Languages and Frameworks",
-        "value": 30 // 0 - 100,
-        "angle": 52 // 0 - 90
+        "value": 30,
+        "angle": 52
       }]
 }
 ```
