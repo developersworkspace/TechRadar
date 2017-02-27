@@ -30,6 +30,15 @@ npm install
 # Build 'web'
 npm run build
 
+# Change directory to 'api'
+cd ./../api
+
+# Install node packages for 'api'
+npm install
+
+# Build 'api'
+npm run build
+
 # Change to root of repository
 cd ./../
 

@@ -300,7 +300,7 @@ export class TechRadarCompoment {
         return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top - 10;
+        return (18 * i) + this.margin.top - 5;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
@@ -353,7 +353,7 @@ export class TechRadarCompoment {
         return this.margin.left + this.width + 10;
       })
       .attr('cy', (d: any, i: number) => {
-        return (18 * i) + this.margin.top + this.radius + this.margin.top - 10;
+        return (18 * i) + this.margin.top + this.radius + this.margin.top - 5;
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {

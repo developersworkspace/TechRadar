@@ -1,0 +1,14 @@
+{
+  "name": "TechRadar API",
+  "version": "1.0.0",
+  "description": "",
+  "title": "TechRadar API",
+  "url" : "http://techradar.developersworkspace.co.za/api",
+  "sampleUrl": "http://localhost:3000.com/api",
+  "order": [
+  ],
+  "template": {
+  	"withCompare": true,
+  	"withGenerator": true
+  }
+}
