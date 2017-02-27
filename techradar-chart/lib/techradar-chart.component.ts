@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 @Component({
   selector: 'techradar-chart',
   templateUrl: './techradar-chart.component.html'
-  //styleUrls: ['./app.component.css']
 })
 export class TechRadarCompoment {
 
@@ -23,7 +22,7 @@ export class TechRadarCompoment {
 
   constructor(private elementRef: ElementRef) {
     this.radius = 250;
-    this.margin = { top: 20, right: 150, bottom: 20, left: 150 };
+    this.margin = { top: 20, right: 250, bottom: 20, left: 250 };
     this.scale = d3.scaleLinear().range([0, this.radius]).domain([0, 100]);
     this.width = this.radius * 2;
   }
@@ -163,30 +162,16 @@ export class TechRadarCompoment {
       })
       .attr('r', 5)
       .attr('fill', (d: any) => {
-        if (this.dataset.quadrants.indexOf(d.quadrant) == 0) {
-          return '#1ebccd';
-        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 1) {
-          return '#86b782';
-        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 2) {
-          return '#f38a3e';
-        } else if (this.dataset.quadrants.indexOf(d.quadrant) == 3) {
-          return '#b32059';
-        }
-
-        throw new Error('Invalid quadrant');
+        return this.findQuadrantColor(d);
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       })
-      .on('mouseover', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '7');
-        d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'blue');
+      .on('mouseover', (d: any, i: number) => {
+        this.on_mouseover(d);
       })
-      .on('mouseout', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '4');
-        d3.select('#item-' + d.id + '.icon').attr('r', '4');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
+      .on('mouseout', (d: any, i: number) => {
+        this.on_mouseout(d);
       });
   }
 
@@ -232,7 +217,7 @@ export class TechRadarCompoment {
       .text((d: any, i: number) => {
         return d.name;
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       });
 
@@ -252,7 +237,7 @@ export class TechRadarCompoment {
       .text((d: any, i: number) => {
         return d.name;
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       });
 
@@ -271,7 +256,7 @@ export class TechRadarCompoment {
       .text((d: any, i: number) => {
         return d.name;
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       });
 
@@ -293,20 +278,16 @@ export class TechRadarCompoment {
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
-        return '#1ebccd';
+        return this.findQuadrantColor(d);
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       })
-      .on('mouseover', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '7');
-        d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', '#1ebccd');
+      .on('mouseover', (d: any, i: number) => {
+        this.on_mouseover(d);
       })
-      .on('mouseout', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '4');
-        d3.select('#item-' + d.id + '.icon').attr('r', '4');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
+      .on('mouseout', (d: any, i: number) => {
+        this.on_mouseout(d);
       });
 
     // Draw icons for quadrant 2
@@ -323,20 +304,16 @@ export class TechRadarCompoment {
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
-        return '#86b782';
+        return this.findQuadrantColor(d);
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       })
-      .on('mouseover', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '7');
-        d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', '#86b782');
+      .on('mouseover', (d: any, i: number) => {
+        this.on_mouseover(d);
       })
-      .on('mouseout', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '4');
-        d3.select('#item-' + d.id + '.icon').attr('r', '4');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
+      .on('mouseout', (d: any, i: number) => {
+        this.on_mouseout(d);
       });
 
     // Draw icons for quadrant 3
@@ -353,20 +330,16 @@ export class TechRadarCompoment {
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
-        return '#f38a3e';
+        return this.findQuadrantColor(d);
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       })
-      .on('mouseover', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '7');
-        d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', '#f38a3e');
+      .on('mouseover', (d: any, i: number) => {
+        this.on_mouseover(d);
       })
-      .on('mouseout', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '4');
-        d3.select('#item-' + d.id + '.icon').attr('r', '4');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
+      .on('mouseout', (d: any, i: number) => {
+        this.on_mouseout(d);
       });
 
 
@@ -384,29 +357,51 @@ export class TechRadarCompoment {
       })
       .attr('r', 4)
       .attr('fill', (d: any) => {
-        return '#b32059';
+        return this.findQuadrantColor(d);
       })
-      .attr('id', (d, i) => {
+      .attr('id', (d: any, i: number) => {
         return 'item-' + d.id;
       })
-      .on('mouseover', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '7');
-        d3.select('#item-' + d.id + '.icon').attr('r', '7');
-        d3.select('#item-' + d.id + '.label').attr('fill', '#b32059');
+      .on('mouseover', (d: any, i: number) => {
+        this.on_mouseover(d);
       })
-      .on('mouseout', function (d, i) {
-        d3.select('#item-' + d.id + '.point').attr('r', '4');
-        d3.select('#item-' + d.id + '.icon').attr('r', '4');
-        d3.select('#item-' + d.id + '.label').attr('fill', 'black');
+      .on('mouseout', (d: any, i: number) => {
+        this.on_mouseout(d);
       });
 
   }
 
-  toDegrees(angle: number) {
+  private on_mouseover(item: any) {
+    d3.select('#item-' + item.id + '.point').attr('r', '7');
+    d3.select('#item-' + item.id + '.icon').attr('r', '7');
+    d3.select('#item-' + item.id + '.label').attr('fill', this.findQuadrantColor(item));
+  }
+
+  private on_mouseout(item: any) {
+    d3.select('#item-' + item.id + '.point').attr('r', '4');
+    d3.select('#item-' + item.id + '.icon').attr('r', '4');
+    d3.select('#item-' + item.id + '.label').attr('fill', 'black');
+  }
+
+  private findQuadrantColor(item: any) {
+    if (this.dataset.quadrants.indexOf(item.quadrant) == 0) {
+      return '#1ebccd';
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 1) {
+      return '#86b782';
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 2) {
+      return '#f38a3e';
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 3) {
+      return '#b32059';
+    }
+
+    throw new Error('Invalid quadrant');
+  }
+
+  private toDegrees(angle: number) {
     return angle * (180 / Math.PI);
   }
 
-  toRadians(degrees: number) {
+  private toRadians(degrees: number) {
     return degrees * Math.PI / 180;
   };
 }

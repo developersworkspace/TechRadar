@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -34,81 +33,91 @@ export class AppComponent {
 
     let numberOfItems = 20;
 
-    let randomData = [
-      'Redis',
-      'Mongo',
-      'CouchDB',
-      'SQL',
-      'Micro Services',
-      'Node JS',
-      'Angular 2',
-      'C#',
-      'D3',
-      'Cloud',
-      'Automation',
-      'Continous Delivery'
+    let techniquesData = [
+      'Consumer-driven contract testing',
+      'Pipelines as code',
+      'Threat Modeling',
+      'APIs as a product',
+      'Bug bounties',
+      'Data Lake',
+      'Hosting PII data in the EU',
+      'Client-directed query',
+      'Micro frontends',
+      'Unikernels',
+      'VR beyond gaming',
+      'Cloud lift and shift'
     ];
-    this.data.items = [];
 
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
 
-      let angle = Math.random() * 90;
+    let toolsData = [
+      'Babel',
+      'Consul',
+      'Packer',
+      'Apache Kafka',
+      'HashiCorp Vault',
+      'Let\'s Encrypt',
+      'Terraform',
+      'Webpack',
+      'Pinpoint',
+      'Jenkins as a deployment pipeline'
+    ];
 
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
 
-      this.data.items.push({
-        id: uuid.v4(),
-        name: name,
+    let d1 = techniquesData.map(x => {
+      return {
+        id: this.guid(),
+        name: x,
         quadrant: "Techniques",
         value: Math.random() * 100,
-        angle: angle
-      });
-    }
+        angle: Math.random() * 90
+      };
+    });
 
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        id: uuid.v4(),
-        name: name,
+    let d2 = toolsData.map(x => {
+      return {
+        id: this.guid(),
+        name: x,
         quadrant: "Tools",
         value: Math.random() * 100,
-        angle: angle
-      });
-    }
+        angle: Math.random() * 90
+      };
+    });
 
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
 
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        id: uuid.v4(),
-        name: name,
+    let d3 = techniquesData.map(x => {
+      return {
+        id: this.guid(),
+        name: x,
         quadrant: "Platforms",
         value: Math.random() * 100,
-        angle: angle
-      });
-    }
+        angle: Math.random() * 90
+      };
+    });
 
-    for (let i = 0; i < Math.round(Math.random() * numberOfItems); i++) {
-
-      let angle = Math.random() * 90;
-
-      let name = randomData[Math.floor(Math.random() * randomData.length)];
-
-      this.data.items.push({
-        id: uuid.v4(),
-        name: name,
+    let d4 = toolsData.map(x => {
+      return {
+        id: this.guid(),
+        name: x,
         quadrant: "Languages and Frameworks",
         value: Math.random() * 100,
-        angle: angle
-      });
+        angle: Math.random() * 90
+      };
+    });
+
+    this.data.items = d1.concat(d2).concat(d3).concat(d4);
+
+
+  }
+
+
+  guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
     }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+      s4() + '-' + s4() + s4() + s4();
   }
 
 }

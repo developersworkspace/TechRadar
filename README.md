@@ -2,6 +2,10 @@
 
 ![Screenshot](https://github.com/developersworkspace/TechRadar/blob/master/screenshots/one.png?raw=true)
 
+## What is 'TechRadar' about?
+
+Description....
+
 ## Installation
 
 ### One-line Install

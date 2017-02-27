@@ -1,7 +1,7 @@
 {
   "name": "techradar-chart",
-  "version": "1.0.6",
-  "description": "Tech Radar Chart component",
+  "version": "1.0.8",
+  "description": "Tech Radar Chart Component (Angular and D3)",
   "main": "index.ts",
   "scripts": {
    
