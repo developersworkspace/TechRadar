@@ -20,6 +20,9 @@ export class TechRadarCompoment {
   @Output() 
   onMouseLeave = new EventEmitter();
 
+  @Output() 
+  onClick = new EventEmitter();
+
   private dataset: any = null;
   private svg: any = null;
   private width: number;
@@ -245,6 +248,9 @@ export class TechRadarCompoment {
       })
       .on('mouseout', (d: any, i: number) => {
         this.on_mouseout(d);
+      })
+      .on('click', (d: any, i: number) => {
+        this.onClick.emit(d);
       });
   }
 
@@ -363,6 +369,9 @@ export class TechRadarCompoment {
       })
       .on('mouseout', (d: any, i: number) => {
         this.on_mouseout(d);
+      })
+      .on('click', (d: any, i: number) => {
+        this.onClick.emit(d);
       });
 
     // Draw icons for quadrant 2
@@ -389,6 +398,9 @@ export class TechRadarCompoment {
       })
       .on('mouseout', (d: any, i: number) => {
         this.on_mouseout(d);
+      })
+      .on('click', (d: any, i: number) => {
+        this.onClick.emit(d);
       });
 
     // Draw icons for quadrant 3
@@ -415,6 +427,9 @@ export class TechRadarCompoment {
       })
       .on('mouseout', (d: any, i: number) => {
         this.on_mouseout(d);
+      })
+      .on('click', (d: any, i: number) => {
+        this.onClick.emit(d);
       });
 
 
@@ -442,6 +457,9 @@ export class TechRadarCompoment {
       })
       .on('mouseout', (d: any, i: number) => {
         this.on_mouseout(d);
+      })
+      .on('click', (d: any, i: number) => {
+        this.onClick.emit(d);
       });
 
   }

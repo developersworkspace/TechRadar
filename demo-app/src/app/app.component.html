@@ -1,10 +1,33 @@
-<h1>
-  {{title}}
-</h1>
-<techradar-chart [data]="data" [radius]="300" (onHover)="onHover($event)" (onMouseLeave)="onMouseLeave($event)"></techradar-chart>
-<div *ngIf="selectedItem != null">
-  <h4>{{selectedItem.name}}</h4>
-  <p>
-    {{selectedItem.description}}
-  </p>
+<div class="row">
+  <div class="col-md-8">
+    <img class="img-responsive img-rounded" src="http://placehold.it/900x350" alt="">
+  </div>
+  <div class="col-md-4">
+    <h1>TechRadar Demo Application</h1>
+    <p>
+      Duis porta purus ac nisi dapibus, nec dictum nibh rhoncus. Maecenas nec lacus eleifend, ultrices neque id, commodo nulla.
+      Fusce a tristique massa. Nullam fermentum molestie ex, imperdiet ultrices lectus rutrum nec. Vivamus eget ex blandit,
+      rutrum leo a, ornare mauris. Quisque sagittis nulla et leo tempor, a lacinia lorem porta. Nullam viverra vehicula interdum.
+      Sed pulvinar ante odio, varius bibendum est egestas in. Nunc eleifend lacus sed malesuada pretium. Donec pretium interdum
+      augue eu dictum. Nulla imperdiet lacus quis libero posuere, nec interdum eros consequat. Praesent pretium scelerisque
+      tellus ac convallis. Maecenas placerat ut tellus ac volutpat. Suspendisse potenti.
+    </p>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="well text-center">
+      <h2 *ngIf="selectedItem != null">{{selectedItem.name}} ({{selectedItem.value}})</h2>
+      <p *ngIf="selectedItem != null">{{selectedItem.description}}</p>
+
+      <h2 *ngIf="selectedItem == null">No item selected</h2>
+      <p *ngIf="selectedItem == null">Click on a data point to view details of item</p>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <techradar-chart [data]="data" [radius]="300" (onHover)="onHover($event)" (onMouseLeave)="onMouseLeave($event)" (onClick)="onClick($event)"></techradar-chart>
+  </div>
 </div>

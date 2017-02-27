@@ -27,11 +27,15 @@ export class AppComponent {
   }
 
   onHover(item: any) {
-    this.selectedItem = item;
+    //this.selectedItem = item;
   }
 
   onMouseLeave(item: any) {
-    this.selectedItem = null;
+    //this.selectedItem = null;
+  }
+
+  onClick(item: any) {
+    this.selectedItem = item;
   }
 
   initializeData() {
@@ -50,7 +54,7 @@ export class AppComponent {
         id: this.guid(),
         name: x,
         quadrant: "Techniques",
-        value: Math.random() * 100,
+        value: Math.floor(Math.random() * 100),
         angle: Math.random() * 90,
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pretium ligula, sed pretium diam. Suspendisse commodo odio ac ligula mollis, sed condimentum ante finibus. Fusce quis sollicitudin augue. Vestibulum sed sem mauris. Curabitur ac tincidunt eros, vel maximus nunc. Fusce porta feugiat lacinia. Phasellus interdum, sem sed pharetra congue, dolor libero pretium est, eu tempor ipsum lorem sed mi. Suspendisse dignissim dui ut pulvinar egestas. Pellentesque urna eros, gravida in maximus eget, euismod at libero. Praesent hendrerit lacus in odio sodales, at ultricies turpis molestie. Sed mattis risus vel egestas semper."
       };
@@ -61,7 +65,7 @@ export class AppComponent {
         id: this.guid(),
         name: x,
         quadrant: "Tools",
-        value: Math.random() * 100,
+        value: Math.floor(Math.random() * 100),
         angle: Math.random() * 90,
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pretium ligula, sed pretium diam. Suspendisse commodo odio ac ligula mollis, sed condimentum ante finibus. Fusce quis sollicitudin augue. Vestibulum sed sem mauris. Curabitur ac tincidunt eros, vel maximus nunc. Fusce porta feugiat lacinia. Phasellus interdum, sem sed pharetra congue, dolor libero pretium est, eu tempor ipsum lorem sed mi. Suspendisse dignissim dui ut pulvinar egestas. Pellentesque urna eros, gravida in maximus eget, euismod at libero. Praesent hendrerit lacus in odio sodales, at ultricies turpis molestie. Sed mattis risus vel egestas semper."
       };
@@ -73,7 +77,7 @@ export class AppComponent {
         id: this.guid(),
         name: x,
         quadrant: "Platforms",
-        value: Math.random() * 100,
+        value: Math.floor(Math.random() * 100),
         angle: Math.random() * 90,
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pretium ligula, sed pretium diam. Suspendisse commodo odio ac ligula mollis, sed condimentum ante finibus. Fusce quis sollicitudin augue. Vestibulum sed sem mauris. Curabitur ac tincidunt eros, vel maximus nunc. Fusce porta feugiat lacinia. Phasellus interdum, sem sed pharetra congue, dolor libero pretium est, eu tempor ipsum lorem sed mi. Suspendisse dignissim dui ut pulvinar egestas. Pellentesque urna eros, gravida in maximus eget, euismod at libero. Praesent hendrerit lacus in odio sodales, at ultricies turpis molestie. Sed mattis risus vel egestas semper."
       };
@@ -84,7 +88,7 @@ export class AppComponent {
         id: this.guid(),
         name: x,
         quadrant: "Languages and Frameworks",
-        value: Math.random() * 100,
+        value: Math.floor(Math.random() * 100),
         angle: Math.random() * 90,
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu pretium ligula, sed pretium diam. Suspendisse commodo odio ac ligula mollis, sed condimentum ante finibus. Fusce quis sollicitudin augue. Vestibulum sed sem mauris. Curabitur ac tincidunt eros, vel maximus nunc. Fusce porta feugiat lacinia. Phasellus interdum, sem sed pharetra congue, dolor libero pretium est, eu tempor ipsum lorem sed mi. Suspendisse dignissim dui ut pulvinar egestas. Pellentesque urna eros, gravida in maximus eget, euismod at libero. Praesent hendrerit lacus in odio sodales, at ultricies turpis molestie. Sed mattis risus vel egestas semper."
       };
