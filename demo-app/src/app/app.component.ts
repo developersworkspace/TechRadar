@@ -13,17 +13,20 @@ export class AppComponent {
 
   constructor() {
 
-    this.data = {
+    let dataModel = {
       quadrants: [],
       items: []
     };
 
-    this.data.quadrants.push("Techniques");
-    this.data.quadrants.push("Tools");
-    this.data.quadrants.push("Platforms");
-    this.data.quadrants.push("Languages and Frameworks");
 
-    this.initializeData();
+    dataModel.quadrants.push("Techniques");
+    dataModel.quadrants.push("Tools");
+    dataModel.quadrants.push("Platforms");
+    dataModel.quadrants.push("Languages and Frameworks");
+
+    dataModel.items = this.getItems();
+
+    this.data = dataModel;
   }
 
   onHover(item: any) {
@@ -38,7 +41,7 @@ export class AppComponent {
     this.selectedItem = item;
   }
 
-  initializeData() {
+  getItems() {
 
     let techniquesData = ["Git flow / Pull Requests", "Incremental data warehousing", "Events for messages - CQRS", "Measure Pipeline disruptions", "Continuous Experimentation", "Reduce iRules dependence", "SaaS for non-core systems", "Pair Programming", "iOS Accessibility", "Single Page App", "iOS Adaptivity", "Build Pipelines", "Data Informed Decion Making", "Polygot Programming", "internal load balancing off F5", "Isolated dev envs", "Edge Services"];
 
@@ -94,7 +97,7 @@ export class AppComponent {
       };
     });
 
-    this.data.items = d1.concat(d2).concat(d3).concat(d4);
+    return d1.concat(d2).concat(d3).concat(d4);
 
   }
 

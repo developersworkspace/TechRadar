@@ -29,8 +29,6 @@ export class TechRadarCompoment {
   private margin: any;
   private scale: any;
 
-  private doDrawTechRadar = true;
-
   constructor(private elementRef: ElementRef) {
 
   }
@@ -39,19 +37,9 @@ export class TechRadarCompoment {
 
     this.dataset = changes.data.currentValue;
 
-    this.doDrawTechRadar = true;
+    this.drawTechRadar();
   }
 
-  ngAfterViewInit() {
-
-  }
-
-  ngDoCheck() {
-    if (this.doDrawTechRadar) {
-      this.drawTechRadar();
-      this.doDrawTechRadar = false;
-    }
-  }
 
   private drawTechRadar() {
 
