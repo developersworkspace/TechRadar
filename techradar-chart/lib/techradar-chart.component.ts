@@ -13,7 +13,6 @@ export class TechRadarCompoment {
   @Input()
   public radius: number = 300;
 
-
   @Output()
   onHover = new EventEmitter();
 
