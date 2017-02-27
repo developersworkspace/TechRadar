@@ -3,7 +3,10 @@
 Example Usage:
 
 ```html
-<techradar-chart [data]="data"></techradar-chart>
+<techradar-chart 
+    [data]="data"
+    [radius]="400">
+</techradar-chart>
 ```
 
 Where:
