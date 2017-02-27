@@ -1,28 +1,54 @@
+// Imports
+import * as mongo from 'mongodb';
+import { Db } from 'mongodb';
+
 export class DataService {
+
+    url = 'mongodb://localhost:27017/techradar';
 
     constructor() {
 
     }
 
     list(): Promise<any[]> {
-        return new Promise((resolve: Function, reject: Function) => {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(this.url).then((db: Db) => {
+            let collection = db.collection('items');
 
+            return collection.find({}).toArray().then((result: any[]) => {
+                db.close();
+                return result;
+            });
         });
     }
 
-    create(title: string, description: string) {
-        return new Promise((resolve: Function, reject: Function) => {
+    create(title: string, description: string, quadrant: string): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(this.url).then((db: Db) => {
+            let collection = db.collection('items');
 
+            return collection.insertOne(this.getInstanceOfItem(title, description, quadrant)).then((result: any) => {
+                db.close();
+                return true;
+            });
         });
     }
 
-    find(id: string) {
-        return new Promise((resolve: Function, reject: Function) => {
+    find(id: string): Promise<any> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(this.url).then((db: Db) => {
+            let collection = db.collection('items');
 
+            return collection.findOne({
+                id: id
+            }).then((result: any) => {
+                db.close();
+                return result;
+            });
         });
     }
 
-    private getInstanceOfItem(title: string, description: string, quadrant: string) {
+    private getInstanceOfItem(title: string, description: string, quadrant: string): any {
         return {
             id: this.generateId(),
             name: title,
@@ -33,7 +59,7 @@ export class DataService {
         };
     }
 
-    private generateAngle() {
+    private generateAngle(): number {
         return Math.random() * 90
     }
 

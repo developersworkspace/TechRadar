@@ -8,21 +8,22 @@
   <div class="col-lg-12">
     <div class="form-group">
       <label for="title">Title:</label>
-      <input type="text" class="form-control" id="title">
+      <input type="text" class="form-control" [(ngModel)]="suggestViewModel.title" id="title">
     </div>
     <div class="form-group">
       <label for="description">Description:</label>
-      <textarea class="form-control" rows="5" id="description"></textarea>
+      <textarea class="form-control"  [(ngModel)]="suggestViewModel.description" rows="5" id="description"></textarea>
     </div>
     <div class="form-group">
       <label for="description">Quadrant:</label>
-      <select class="form-control">
+      <select class="form-control" [(ngModel)]="suggestViewModel.quadrant">
         <option [value]="'Techniques'">Techniques</option>
         <option [value]="'Tools'">Tools</option>
         <option [value]="'Platforms'">Platforms</option>
         <option [value]="'Languages & Frameworks'">Languages & Frameworks</option>
       </select>
     </div>
-    <button class="btn btn-primary">Submit</button>
+    <p class="text-danger">{{suggestViewModel.message}}</p>
+    <button class="btn btn-primary" (click)="suggestViewModel.submit()">Submit</button>
   </div>
 </div>

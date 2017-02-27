@@ -11,12 +11,14 @@
   "author": "Barend Erasmus",
   "license": "MIT",
   "dependencies": {
+    "@types/mongodb": "^2.1.41",
     "body-parser": "^1.16.1",
     "cors": "^2.8.1",
     "express": "^4.14.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-typescript": "^3.1.5",
+    "mongodb": "^2.2.24",
     "typescript": "^2.2.1"
   }
 }
