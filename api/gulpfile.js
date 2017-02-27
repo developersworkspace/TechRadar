@@ -3,7 +3,6 @@ var gulp = require('gulp');
 var clean = require('gulp-clean');
 var ts = require('gulp-typescript');
 
-
 // Compile typescript files
 gulp.task('ts', ['clean'], function () {
     return gulp
@@ -21,6 +20,7 @@ gulp.task('clean', function () {
         ], { read: false })
         .pipe(clean())
 });
+
 
 // Copies 'package.json' file to build directory
 gulp.task('build1', ['clean'], function () {
