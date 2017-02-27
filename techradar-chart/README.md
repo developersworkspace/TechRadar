@@ -6,7 +6,9 @@ Example Usage:
 <techradar-chart 
     [data]="data"
     [radius]="400"
-    (mouseenter)="onHover($event)">
+    (onHover)="onHover($event)"
+    (onMouseLeave)="onMouseLeave($event)"
+    (onClick)="onClick($event)">
 </techradar-chart>
 ```
 
