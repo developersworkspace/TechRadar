@@ -31,36 +31,13 @@ export class AppComponent {
 
   updateItems() {
 
-    let numberOfItems = 20;
+    let techniquesData = ["Git flow / Pull Requests", "Incremental data warehousing", "Events for messages - CQRS", "Measure Pipeline disruptions", "Continuous Experimentation", "Reduce iRules dependence", "SaaS for non-core systems", "Pair Programming", "iOS Accessibility", "Single Page App", "iOS Adaptivity", "Build Pipelines", "Data Informed Decion Making", "Polygot Programming", "internal load balancing off F5", "Isolated dev envs", "Edge Services"];
 
-    let techniquesData = [
-      'Consumer-driven contract testing',
-      'Pipelines as code',
-      'Threat Modeling',
-      'APIs as a product',
-      'Bug bounties',
-      'Data Lake',
-      'Hosting PII data in the EU',
-      'Client-directed query',
-      'Micro frontends',
-      'Unikernels',
-      'VR beyond gaming',
-      'Cloud lift and shift'
-    ];
+    let toolsData = ["Docker", "bind", "Appium", "Android Studio", "Responsive Android", "AutoLayout - iOS", "Kiwi - iOS unit test", "BEM", "Crashlytics", "Consul", "Swagger Code-Gen", "PowerMock", "Mockito", "Json Web Tokens (JWT)", "Lemming", "Hystrix"];
 
+    let platformsData = ["OpenId Connect", "Location based services", "Openstack", "RHEL 7", "App containers", "Google Cloud Data Flow", "Postgres as NoSQL", "AWS 2014 Innovations", "Azure", "Mesos", "Marathon", "Kubernetes", "Google App Engine", "Google as corporate platform", "Google Play - (alpha/beta builds)"];
 
-    let toolsData = [
-      'Babel',
-      'Consul',
-      'Packer',
-      'Apache Kafka',
-      'HashiCorp Vault',
-      'Let\'s Encrypt',
-      'Terraform',
-      'Webpack',
-      'Pinpoint',
-      'Jenkins as a deployment pipeline'
-    ];
+    let languagesFrameworksData = ["CDI", "Jersey", "Guice", "RxJava", "Java 8", "Groovy", "Swift", "Scala - the good parts", "Serverside Javascript", "Coffeescript", "Functional Reactive Programming", "Clojure", "RxJs", "Web Components", "Mustache/Handlebars template"];
 
 
     let d1 = techniquesData.map(x => {
@@ -84,7 +61,7 @@ export class AppComponent {
     });
 
 
-    let d3 = techniquesData.map(x => {
+    let d3 = platformsData.map(x => {
       return {
         id: this.guid(),
         name: x,
@@ -94,7 +71,7 @@ export class AppComponent {
       };
     });
 
-    let d4 = toolsData.map(x => {
+    let d4 = languagesFrameworksData.map(x => {
       return {
         id: this.guid(),
         name: x,
@@ -105,7 +82,6 @@ export class AppComponent {
     });
 
     this.data.items = d1.concat(d2).concat(d3).concat(d4);
-
 
   }
 

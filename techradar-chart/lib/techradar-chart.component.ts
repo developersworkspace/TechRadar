@@ -21,7 +21,7 @@ export class TechRadarCompoment {
   private doUpdateChart = true;
 
   constructor(private elementRef: ElementRef) {
-    this.radius = 250;
+    this.radius = 300;
     this.margin = { top: 20, right: 250, bottom: 20, left: 250 };
     this.scale = d3.scaleLinear().range([0, this.radius]).domain([0, 100]);
     this.width = this.radius * 2;
