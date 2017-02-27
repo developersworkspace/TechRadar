@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Tech Radar';
+  title = 'TechRadar Demo App by Developer\'s Workspace';
 
   public data: any = null;
 
@@ -22,14 +22,10 @@ export class AppComponent {
     this.data.quadrants.push("Platforms");
     this.data.quadrants.push("Languages and Frameworks");
 
-    // setInterval(() => {
-    //   this.updateItems();
-    // }, 1000);
-
-    this.updateItems();
+    this.initializeData();
   }
 
-  updateItems() {
+  initializeData() {
 
     let techniquesData = ["Git flow / Pull Requests", "Incremental data warehousing", "Events for messages - CQRS", "Measure Pipeline disruptions", "Continuous Experimentation", "Reduce iRules dependence", "SaaS for non-core systems", "Pair Programming", "iOS Accessibility", "Single Page App", "iOS Adaptivity", "Build Pipelines", "Data Informed Decion Making", "Polygot Programming", "internal load balancing off F5", "Isolated dev envs", "Edge Services"];
 
