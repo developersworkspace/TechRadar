@@ -42,9 +42,9 @@ export class OAuth {
                         }
                     }, (error, response, userResponse: any) => {
                         if (!error && response.statusCode == 200) {
-                           resolve(this.buildJWT(type, accessTokenResponse.access_token, userResponse.email));
+                            resolve(this.buildJWT(type, accessTokenResponse.access_token, JSON.parse(userResponse).email));
                         } else {
-                           reject();
+                            reject();
                         }
                     });
                 } else {
