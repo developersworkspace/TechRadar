@@ -1,4 +1,6 @@
+// Imports
 import { Component, OnInit } from '@angular/core';
+import { JwtHelper } from 'angular2-jwt';
 
 @Component({
   selector: 'app-nav',
@@ -9,6 +11,7 @@ export class NavComponent implements OnInit {
 
 
   isAuthenticated: Boolean = false;
+  decodedToken: any = null;
 
   constructor() { }
 
@@ -16,8 +19,10 @@ export class NavComponent implements OnInit {
     let token = localStorage.getItem("jwt");
     if (token) {
       this.isAuthenticated = true;
+      this.decodedToken = new JwtHelper().decodeToken(token);
     } else {
       this.isAuthenticated = false;
+      this.decodedToken = null;
     }
   }
 
