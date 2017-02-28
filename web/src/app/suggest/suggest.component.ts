@@ -1,5 +1,6 @@
 // Imports
 import { Component, OnInit } from '@angular/core';
+import { JwtHelper } from 'angular2-jwt';
 
 // Imports for HTTP requests
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
@@ -17,13 +18,23 @@ import { SuggestViewModel } from './../view-models/suggest-view-model';
 })
 export class SuggestComponent implements OnInit {
 
-  public suggestViewModel: any = null;
+  suggestViewModel: any = null;
+  isAuthenticated: Boolean = false;
+  decodedToken: any = null;
 
   constructor(http: Http) {
     this.suggestViewModel = new SuggestViewModel(http);
-   }
+  }
 
   ngOnInit() {
+    let token = localStorage.getItem("jwt");
+    if (token) {
+      this.isAuthenticated = true;
+      this.decodedToken = new JwtHelper().decodeToken(token);
+    } else {
+      this.isAuthenticated = false;
+      this.decodedToken = null;
+    }
   }
 
 }

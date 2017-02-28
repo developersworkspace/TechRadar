@@ -9,7 +9,6 @@ import { JwtHelper } from 'angular2-jwt';
 })
 export class NavComponent implements OnInit {
 
-
   isAuthenticated: Boolean = false;
   decodedToken: any = null;
 
@@ -24,6 +23,11 @@ export class NavComponent implements OnInit {
       this.isAuthenticated = false;
       this.decodedToken = null;
     }
+  }
+
+  onClick_Logout() {
+    localStorage.removeItem('jwt');
+    window.location.href = '/';
   }
 
 }

@@ -35,6 +35,54 @@ export class DataService {
         });
     }
 
+    upvote(id: string): Promise<any> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            return this.find(id).then((item: any) => {
+                let collection = db.collection('items');
+                let newValue = item.value + 2;
+
+                if (newValue > 100) {
+                    newValue = 100;
+                }
+
+                return collection.updateOne({
+                    id: id
+                }, {
+                        $set: {
+                            value: newValue
+                        }
+                    }).then((result: any) => {
+                        return true;
+                    });
+            });
+        });
+    }
+
+    downvote(id: string): Promise<any> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            return this.find(id).then((item: any) => {
+                let collection = db.collection('items');
+                let newValue = item.value - 2;
+
+                if (newValue < 0) {
+                    newValue = 0;
+                }
+
+                return collection.updateOne({
+                    id: id
+                }, {
+                        $set: {
+                            value: newValue
+                        }
+                    }).then((result: any) => {
+                        return true;
+                    });
+            });
+        });
+    }
+
     find(id: string): Promise<any> {
         let MongoClient = mongo.MongoClient
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {

@@ -26,7 +26,10 @@
           <a href="/api/oauth/github">Login with Github</a>
         </li>
         <li *ngIf="isAuthenticated">
-          <a>Welcome, </a>
+          <a>Welcome, {{decodedToken.emailAddress}}</a>
+        </li>
+        <li *ngIf="isAuthenticated">
+          <a (click)="onClick_Logout()">Logout</a>
         </li>
       </ul>
     </div>

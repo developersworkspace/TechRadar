@@ -251,6 +251,10 @@ export class TechRadarCompoment {
     this.svg.selectAll('.icon')
       .remove();
 
+    // Remove all header labels
+    this.svg.selectAll('.header-label')
+      .remove();
+
     if (this.dataset == null || this.dataset.items == null || this.dataset.items.length == 0) {
       return;
     }

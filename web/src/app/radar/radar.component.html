@@ -12,7 +12,11 @@
 </div>
 <div class="row" *ngIf="techRadarChartViewModel.selectedItem != null">
   <div class="col-lg-12">
-    <h4>{{techRadarChartViewModel.selectedItem.name}}</h4>
+    <h4>
+      {{techRadarChartViewModel.selectedItem.name}}
+      <button class="btn btn-success pull-right" style="margin: 5px" [disabled]="!isAuthenticated" (click)="techRadarChartViewModel.onClick_UpVote()">Up Vote</button>
+      <button class="btn btn-warning pull-right" style="margin: 5px" [disabled]="!isAuthenticated" (click)="techRadarChartViewModel.onClick_DownVote()">Down Vote</button>
+    </h4>
     <p>{{techRadarChartViewModel.selectedItem.description}}</p>
 
     <!--<div class="panel panel-default">

@@ -45,4 +45,36 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
 });
 
 
+/**
+ * @api {post} /data/upvote UP VOTE
+ * @apiName DataUpVote
+ * @apiGroup Data
+ * 
+ * @apiSuccess {Object} response Empty.
+ * 
+ */
+router.post('/upvote', (req: Request, res: Response, next: Function) => {
+    let dataService = new DataService();
+
+    dataService.upvote(req.body.id).then((result: Boolean) => {
+        res.json(result);
+    });
+});
+
+/**
+ * @api {post} /data/downvote DOWN VOTE
+ * @apiName DataDownVote
+ * @apiGroup Data
+ * 
+ * @apiSuccess {Object} response Empty.
+ * 
+ */
+router.post('/downvote', (req: Request, res: Response, next: Function) => {
+    let dataService = new DataService();
+
+    dataService.downvote(req.body.id).then((result: Boolean) => {
+        res.json(result);
+    });
+});
+
 export = router;

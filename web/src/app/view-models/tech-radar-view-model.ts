@@ -21,6 +21,26 @@ export class TechRadarViewModel {
         this.selectedItem = item;
     }
 
+    public onClick_UpVote() {
+        this.http.post(environment.apiUri + '/data/upvote', {
+            id: this.selectedItem.id
+        })
+            .map((res: Response) => res.json())
+            .subscribe((result: any) => {
+                this.loadData();
+            });
+    }
+
+    public onClick_DownVote() {
+        this.http.post(environment.apiUri + '/data/downvote', {
+            id: this.selectedItem.id
+        })
+            .map((res: Response) => res.json())
+            .subscribe((result: any) => {
+                this.loadData();
+            });
+    }
+
     private loadData() {
         this.http.get(environment.apiUri + '/data')
             .map((res: Response) => res.json())
