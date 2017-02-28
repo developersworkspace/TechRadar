@@ -18,7 +18,6 @@ export class OAuth {
 
 
     public getAccessTokenFromProvider(type: string, code: string) {
-
         return new Promise((resolve: Function, reject: Function) => {
             request({
                 method: 'post',
@@ -34,9 +33,20 @@ export class OAuth {
                 headers: {
                     'User-Agent': 'request'
                 }
-            }, (error, response, body) => {
+            }, (error, response, accessTokenResponse: any) => {
                 if (!error && response.statusCode == 200) {
-                    resolve(this.buildJWT(type, body));
+                    request({
+                        url: 'https://api.github.com/user?access_token=' + accessTokenResponse.access_token,
+                        headers: {
+                            'User-Agent': 'request'
+                        }
+                    }, (error, response, userResponse: any) => {
+                        if (!error && response.statusCode == 200) {
+                           resolve(this.buildJWT(type, accessTokenResponse.access_token, userResponse.email));
+                        } else {
+                           reject();
+                        }
+                    });
                 } else {
                     reject();
                 }
@@ -44,12 +54,12 @@ export class OAuth {
         });
     }
 
-    private buildJWT(type: string, response: any) {
-        let token = jwt.sign({ accessToken: response.access_token }, config.oauth.jwtSecret, {
+    private buildJWT(type: string, accessToken: string, emailAddress: string) {
+        let token = jwt.sign({ accessToken: accessToken }, config.oauth.jwtSecret, {
             expiresIn: 3600,
             audience: this.getProvider(type).clientId,
             issuer: config.oauth.jwtIssuer,
-            jwtid: response.access_token
+            jwtid: accessToken
         });
 
         return token;
