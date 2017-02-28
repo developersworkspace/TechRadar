@@ -7,6 +7,7 @@ import * as cors from 'cors';
 
 // Imports routes
 import dataRoute = require('./routes/data');
+import oauthRoute = require('./routes/oauth');
 
 export class WebApi {
 
@@ -23,6 +24,7 @@ export class WebApi {
 
     private configureRoutes(app: express.Express) {
         app.use("/api/data", dataRoute);
+        app.use("/api/oauth", oauthRoute);
     }
 
     public getApp() {
