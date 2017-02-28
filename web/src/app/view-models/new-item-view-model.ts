@@ -53,6 +53,7 @@ export class NewItemViewModel {
                 this.title = null;
                 this.description = null;
                 this.quadrant = null;
+                window.location.href = '/radar';
             });
     }
 }

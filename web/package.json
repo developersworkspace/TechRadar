@@ -24,7 +24,7 @@
     "angular2-jwt": "^0.1.28",
     "core-js": "^2.4.1",
     "rxjs": "^5.0.1",
-    "techradar-chart": "^1.0.13",
+    "techradar-chart": "^1.0.14",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.7.2"
   },
