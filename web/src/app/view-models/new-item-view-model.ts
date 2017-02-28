@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 // Import environment configuration
 import { environment } from './../../environments/environment';
 
-export class SuggestViewModel {
+export class NewItemViewModel {
 
     title: string;
     description: string;

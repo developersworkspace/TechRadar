@@ -9,21 +9,21 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 // Imports View Models
-import { SuggestViewModel } from './../view-models/suggest-view-model';
+import { NewItemViewModel } from './../view-models/new-item-view-model';
 
 @Component({
-  selector: 'app-suggest',
-  templateUrl: './suggest.component.html',
-  styleUrls: ['./suggest.component.css']
+  selector: 'app-new-item',
+  templateUrl: './new-item.component.html',
+  styleUrls: ['./new-item.component.css']
 })
-export class SuggestComponent implements OnInit {
+export class NewItemComponent implements OnInit {
 
-  suggestViewModel: any = null;
+  newItemViewModel: any = null;
   isAuthenticated: Boolean = false;
   decodedToken: any = null;
 
   constructor(http: Http) {
-    this.suggestViewModel = new SuggestViewModel(http);
+    this.newItemViewModel = new NewItemViewModel(http);
   }
 
   ngOnInit() {
