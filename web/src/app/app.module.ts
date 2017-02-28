@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { RadarComponent } from './radar/radar.component';
 import { SuggestComponent } from './suggest/suggest.component';
 import { LoginComponent } from './login/login.component';
+import { NavComponent } from './nav/nav.component';
 
 
 let router = RouterModule.forRoot([
@@ -41,7 +42,8 @@ let router = RouterModule.forRoot([
     HomeComponent,
     RadarComponent,
     SuggestComponent,
-    LoginComponent
+    LoginComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
