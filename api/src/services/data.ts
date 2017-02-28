@@ -4,7 +4,7 @@ import { Db } from 'mongodb';
 
 export class DataService {
 
-    url = 'mongodb://localhost:27017/techradar';
+    url = 'mongodb://mongo:27017/techradar';
 
     constructor() {
 
