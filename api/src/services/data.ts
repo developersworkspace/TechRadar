@@ -20,6 +20,14 @@ export class DataService {
                 db.close();
                 return result;
             });
+        }).then((result: any[]) => {
+            return this.listVotes().then((listVotesResult: any[]) => {
+                for (let i = 0; i < result.length; i ++) {
+                    result[i].value = listVotesResult.filter(x => x.id == result[i].id).length;
+                }
+
+                return result;
+            });
         });
     }
 
@@ -35,51 +43,21 @@ export class DataService {
         });
     }
 
-    upvote(id: string): Promise<any> {
-        let MongoClient = mongo.MongoClient
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            return this.find(id).then((item: any) => {
-                let collection = db.collection('items');
-                let newValue = item.value + 2;
-
-                if (newValue > 100) {
-                    newValue = 100;
-                }
-
-                return collection.updateOne({
-                    id: id
-                }, {
-                        $set: {
-                            value: newValue
-                        }
-                    }).then((result: any) => {
-                        return true;
-                    });
-            });
+    upvote(id: string, emailAddress: string): Promise<Boolean> {
+        return this.hasVote(id, emailAddress).then((hasVoteResult: Boolean) => {
+            if (hasVoteResult) {
+                return false;
+            } else {
+                return this.addVote(id, emailAddress).then((addVoteResult: Boolean) => {
+                    return true;
+                });
+            }
         });
     }
 
-    downvote(id: string): Promise<any> {
-        let MongoClient = mongo.MongoClient
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            return this.find(id).then((item: any) => {
-                let collection = db.collection('items');
-                let newValue = item.value - 2;
-
-                if (newValue < 0) {
-                    newValue = 0;
-                }
-
-                return collection.updateOne({
-                    id: id
-                }, {
-                        $set: {
-                            value: newValue
-                        }
-                    }).then((result: any) => {
-                        return true;
-                    });
-            });
+    downvote(id: string, emailAddress: string): Promise<Boolean> {
+        return this.removeVote(id, emailAddress).then((removeVoteResult: Boolean) => {
+            return removeVoteResult;
         });
     }
 
@@ -87,13 +65,91 @@ export class DataService {
         let MongoClient = mongo.MongoClient
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
-
             return collection.findOne({
                 id: id
             }).then((result: any) => {
                 db.close();
                 return result;
             });
+        }).then((result: any) => {
+            return this.listVotesById(id).then((listVotesByIdResult: any[]) => {
+                result.value = listVotesByIdResult.length;
+                return result;
+            });
+        });
+    }
+
+    private listVotes(): Promise<any[]> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+            return collection.find({})
+                .toArray().then((result: any[]) => {
+                    db.close();
+                    return result;
+                });
+        });
+    }
+
+    private listVotesById(id: string): Promise<any[]> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+            return collection.find({
+                id: id
+            })
+                .toArray().then((result: any[]) => {
+                    db.close();
+                    return result;
+                });
+        });
+    }
+
+    private addVote(id: string, emailAddress: string): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+
+            return collection.insertOne({
+                id: id,
+                emailAddress: emailAddress
+            }).then((result: any) => {
+                db.close();
+                return true;
+            });
+        });
+    }
+
+    private removeVote(id: string, emailAddress: string): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+
+            return collection.remove({
+                id: id,
+                emailAddress: emailAddress
+            }).then((result: any) => {
+                db.close();
+                return true;
+            });
+        });
+    }
+
+    private hasVote(id: string, emailAddress: string): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+
+            return collection.findOne({
+                id: id,
+                emailAddress: emailAddress
+            }).then((result: any) => {
+                db.close();
+                return result != null;
+            });
+        }).then((result: any) => {
+            let r: Boolean = result;
+            return r;
         });
     }
 
@@ -102,7 +158,6 @@ export class DataService {
             id: this.generateId(),
             name: title,
             quadrant: quadrant,
-            value: 0,
             angle: this.generateAngle(),
             description: description
         };

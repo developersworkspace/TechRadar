@@ -56,7 +56,7 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
 router.post('/upvote', (req: Request, res: Response, next: Function) => {
     let dataService = new DataService();
 
-    dataService.upvote(req.body.id).then((result: Boolean) => {
+    dataService.upvote(req.body.id, 'a').then((result: Boolean) => {
         res.json(result);
     });
 });
@@ -72,7 +72,7 @@ router.post('/upvote', (req: Request, res: Response, next: Function) => {
 router.post('/downvote', (req: Request, res: Response, next: Function) => {
     let dataService = new DataService();
 
-    dataService.downvote(req.body.id).then((result: Boolean) => {
+    dataService.downvote(req.body.id, 'a').then((result: Boolean) => {
         res.json(result);
     });
 });
