@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
+
+  isAuthenticated: Boolean = false;
+
   constructor() { }
 
   ngOnInit() {
+    let token = localStorage.getItem("jwt");
+    if (token) {
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
   }
 
 }

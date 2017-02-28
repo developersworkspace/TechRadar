@@ -22,8 +22,11 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
+        <li *ngIf="!isAuthenticated">
           <a href="/api/oauth/github">Login with Github</a>
+        </li>
+        <li *ngIf="isAuthenticated">
+          <a>Welcome, </a>
         </li>
       </ul>
     </div>
