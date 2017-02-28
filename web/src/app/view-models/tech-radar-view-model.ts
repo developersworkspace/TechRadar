@@ -13,6 +13,8 @@ export class TechRadarViewModel {
     public selectedItem: any = null;
     public selectedItemDetails: any = null;
 
+
+
     constructor(private http: Http) {
         this.loadData();
     }
@@ -22,30 +24,51 @@ export class TechRadarViewModel {
     }
 
     public onClick_UpVote() {
+        let headers = new Headers();
+        headers.append('jwt', localStorage.getItem('jwt'));
+
         this.http.post(environment.apiUri + '/data/upvote', {
             id: this.selectedItem.id
-        })
+        }, {
+                headers: headers
+            })
             .map((res: Response) => res.json())
             .subscribe((result: any) => {
                 this.loadData();
+            }, (err: Error) => {
+
             });
     }
 
     public onClick_DownVote() {
+        let headers = new Headers();
+        headers.append('jwt', localStorage.getItem('jwt'));
+
         this.http.post(environment.apiUri + '/data/downvote', {
             id: this.selectedItem.id
-        })
+        }, {
+                headers: headers
+            })
             .map((res: Response) => res.json())
             .subscribe((result: any) => {
                 this.loadData();
+            }, (err: Error) => {
+
             });
     }
 
     private loadData() {
-        this.http.get(environment.apiUri + '/data')
+        let headers = new Headers();
+        headers.append('jwt', localStorage.getItem('jwt'));
+
+        this.http.get(environment.apiUri + '/data', {
+            headers: headers
+        })
             .map((res: Response) => res.json())
             .subscribe((result: any) => {
                 this.data = result;
+            }, (err: Error) => {
+
             });
     }
 }

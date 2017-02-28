@@ -12,7 +12,7 @@ export class DataService {
     }
 
     list(): Promise<any[]> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
@@ -22,17 +22,26 @@ export class DataService {
             });
         }).then((result: any[]) => {
             return this.listVotes().then((listVotesResult: any[]) => {
-                for (let i = 0; i < result.length; i ++) {
-                    result[i].value = listVotesResult.filter(x => x.id == result[i].id).length;
-                }
+                for (let i = 0; i < result.length; i++) {
+                    let value = listVotesResult.filter(x => x.id == result[i].id && x.isUpVote).length - listVotesResult.filter(x => x.id == result[i].id && !x.isUpVote).length;
 
+                    if (value < 0) {
+                        value = 0;
+                    }
+
+                    if (value > 100) {
+                        value = 100;
+                    }
+                    
+                    result[i].value = value;
+                }
                 return result;
             });
         });
     }
 
     create(title: string, description: string, quadrant: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
@@ -44,25 +53,23 @@ export class DataService {
     }
 
     upvote(id: string, emailAddress: string): Promise<Boolean> {
-        return this.hasVote(id, emailAddress).then((hasVoteResult: Boolean) => {
-            if (hasVoteResult) {
-                return false;
-            } else {
-                return this.addVote(id, emailAddress).then((addVoteResult: Boolean) => {
-                    return true;
-                });
-            }
+        return this.removeVote(id, emailAddress).then((removeVoteResult: Boolean) => {
+            return this.addVote(id, emailAddress, true);
+        }).then((addVoteResult: Boolean) => {
+            return addVoteResult;
         });
     }
 
     downvote(id: string, emailAddress: string): Promise<Boolean> {
         return this.removeVote(id, emailAddress).then((removeVoteResult: Boolean) => {
-            return removeVoteResult;
+            return this.addVote(id, emailAddress, false);
+        }).then((addVoteResult: Boolean) => {
+            return addVoteResult;
         });
     }
 
     find(id: string): Promise<any> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
             return collection.findOne({
@@ -80,7 +87,7 @@ export class DataService {
     }
 
     private listVotes(): Promise<any[]> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
             return collection.find({})
@@ -92,7 +99,7 @@ export class DataService {
     }
 
     private listVotesById(id: string): Promise<any[]> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
             return collection.find({
@@ -105,14 +112,15 @@ export class DataService {
         });
     }
 
-    private addVote(id: string, emailAddress: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient
+    private addVote(id: string, emailAddress: string, isUpVote: Boolean): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
 
             return collection.insertOne({
                 id: id,
-                emailAddress: emailAddress
+                emailAddress: emailAddress,
+                isUpVote: isUpVote
             }).then((result: any) => {
                 db.close();
                 return true;
@@ -121,7 +129,7 @@ export class DataService {
     }
 
     private removeVote(id: string, emailAddress: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient
+        let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
 
@@ -132,24 +140,6 @@ export class DataService {
                 db.close();
                 return true;
             });
-        });
-    }
-
-    private hasVote(id: string, emailAddress: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            let collection = db.collection('votes');
-
-            return collection.findOne({
-                id: id,
-                emailAddress: emailAddress
-            }).then((result: any) => {
-                db.close();
-                return result != null;
-            });
-        }).then((result: any) => {
-            let r: Boolean = result;
-            return r;
         });
     }
 

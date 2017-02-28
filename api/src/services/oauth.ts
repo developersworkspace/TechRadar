@@ -56,7 +56,7 @@ export class OAuth {
 
     private buildJWT(type: string, accessToken: string, emailAddress: string) {
         let token = jwt.sign({ type: type, accessToken: accessToken, emailAddress: emailAddress }, config.oauth.jwtSecret, {
-            expiresIn: 3600,
+            //expiresIn: 3600,
             audience: this.getProvider(type).clientId,
             issuer: config.oauth.jwtIssuer,
             jwtid: accessToken

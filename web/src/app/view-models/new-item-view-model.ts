@@ -38,11 +38,16 @@ export class NewItemViewModel {
             return;
         }
 
+        let headers = new Headers();
+        headers.append('jwt', localStorage.getItem('jwt'));
+
         this.http.post(environment.apiUri + '/data/create', {
             title: this.title,
             description: this.description,
             quadrant: this.quadrant
-        })
+        }, {
+                headers: headers
+            })
             .map((res: Response) => res.json())
             .subscribe((result: any) => {
                 this.title = null;
