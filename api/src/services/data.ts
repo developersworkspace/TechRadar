@@ -2,9 +2,10 @@
 import * as mongo from 'mongodb';
 import { Db } from 'mongodb';
 
-export class DataService {
+// Imports configuration
+import { config } from './../config';
 
-    url = 'mongodb://mongo:27017/techradar';
+export class DataService {
 
     constructor() {
 
@@ -12,7 +13,7 @@ export class DataService {
 
     list(): Promise<any[]> {
         let MongoClient = mongo.MongoClient
-        return MongoClient.connect(this.url).then((db: Db) => {
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
             return collection.find({}).toArray().then((result: any[]) => {
@@ -24,7 +25,7 @@ export class DataService {
 
     create(title: string, description: string, quadrant: string): Promise<Boolean> {
         let MongoClient = mongo.MongoClient
-        return MongoClient.connect(this.url).then((db: Db) => {
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
             return collection.insertOne(this.getInstanceOfItem(title, description, quadrant)).then((result: any) => {
@@ -36,7 +37,7 @@ export class DataService {
 
     find(id: string): Promise<any> {
         let MongoClient = mongo.MongoClient
-        return MongoClient.connect(this.url).then((db: Db) => {
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
             return collection.findOne({

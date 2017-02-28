@@ -7,7 +7,6 @@ import { OAuth } from './../services/oauth';
 
 let router = express.Router();
 
-
 router.get('/github', (req: Request, res: Response, next: Function) => {
     let oauthService = new OAuth();
 
@@ -21,7 +20,5 @@ router.get('/github/callback', (req: Request, res: Response, next: Function) => 
         res.json(jwt);
     });
 });
-
-
 
 export = router;

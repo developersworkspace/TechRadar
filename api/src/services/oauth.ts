@@ -2,21 +2,15 @@
 import * as request from 'request';
 import * as jwt from 'jsonwebtoken';
 
+// Imports configuration
+import { config } from './../config';
+
 export class OAuth {
-
-
-    jwtSecret: string = 'techradar';
-
-    github = {
-        clientId: '6e7d85d80257ee842525',
-        clientSecret: '558b485c9662e71109b2d935288e7eed608617f9',
-        redirectUri: 'http://techradar.developersworkspace.co.za/api/oauth/github/callback'
-    }
 
     public getRedirectUrlToProvider(type: string) {
         switch (type) {
             case 'github':
-                return `https://github.com/login/oauth/authorize?client_id=${this.github.clientId}&redirect_uri=${this.github.redirectUri}&scope=user:email&state=hello_world&allow_signup=true`;
+                return `https://github.com/login/oauth/authorize?client_id=${config.oauth.providers.github.clientId}&redirect_uri=${config.oauth.providers.github.redirectUri}&scope=user:email&state=hello_world&allow_signup=true`;
             default:
                 return null
         }
@@ -42,7 +36,7 @@ export class OAuth {
                 }
             }, (error, response, body) => {
                 if (!error && response.statusCode == 200) {
-                    resolve(this.buildJWT(body));
+                    resolve(this.buildJWT(type, body));
                 } else {
                     reject();
                 }
@@ -50,11 +44,11 @@ export class OAuth {
         });
     }
 
-    private buildJWT(response: any) {
-        let token = jwt.sign({ accessToken: response.access_token }, this.jwtSecret, {
+    private buildJWT(type: string, response: any) {
+        let token = jwt.sign({ accessToken: response.access_token }, config.oauth.jwtSecret, {
             expiresIn: 3600,
-            audience: this.github.clientId,
-            issuer: 'techradar.developersworkspace.co.za',
+            audience: this.getProvider(type).clientId,
+            issuer: config.oauth.jwtIssuer,
             jwtid: response.access_token
         });
 
@@ -73,7 +67,7 @@ export class OAuth {
     private getProvider(type: string) {
         switch (type) {
             case 'github':
-                return this.github;
+                return config.oauth.providers.github
             default:
                 return null
         }
