@@ -7,6 +7,9 @@ import 'rxjs/add/operator/catch';
 // Import environment configuration
 import { environment } from './../../environments/environment';
 
+// Imports models
+import { } from './../models/blip';
+
 export class NewItemViewModel {
 
     title: string;

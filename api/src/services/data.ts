@@ -2,6 +2,10 @@
 import * as mongo from 'mongodb';
 import { Db } from 'mongodb';
 
+// Imports models
+import { Item } from './../models/item';
+import { Vote } from './../models/vote';
+
 // Imports configuration
 import { config } from './../config';
 
@@ -11,31 +15,16 @@ export class DataService {
 
     }
 
-    list(): Promise<any[]> {
+    list(): Promise<Item[]> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
-
-            return collection.find({}).toArray().then((result: any[]) => {
-                db.close();
-                return result;
-            });
-        }).then((result: any[]) => {
-            return this.listVotes().then((listVotesResult: any[]) => {
-                for (let i = 0; i < result.length; i++) {
-                    let value = listVotesResult.filter(x => x.id == result[i].id && x.isUpVote).length - listVotesResult.filter(x => x.id == result[i].id && !x.isUpVote).length;
-
-                    if (value < 0) {
-                        value = 0;
-                    }
-
-                    if (value > 100) {
-                        value = 100;
-                    }
-                    
-                    result[i].value = value;
-                }
-                return result;
+            return collection.find({}).toArray()
+        }).then((result: Item[]) => {
+            return result.map(x => new Item(x.name, x.description, x.quadrant, x.creator).setId(x.id).setAngle(x.angle).setTimestamp(x.timestamp));
+        }).then((listItemsResult: Item[]) => {
+            return this.listVotes().then((listVotesResult: Vote[]) => {
+                return listItemsResult.map(x => x.setValue(listVotesResult));
             });
         });
     }
@@ -44,8 +33,7 @@ export class DataService {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
-
-            return collection.insertOne(this.getInstanceOfItem(title, description, quadrant, emailAddress)).then((result: any) => {
+            return collection.insertOne(new Item(title, description, quadrant, emailAddress)).then((result: any) => {
                 db.close();
                 return true;
             });
@@ -68,47 +56,41 @@ export class DataService {
         });
     }
 
-    find(id: string): Promise<any> {
+    find(id: string): Promise<Item> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
             return collection.findOne({
                 id: id
-            }).then((result: any) => {
-                db.close();
-                return result;
             });
         }).then((result: any) => {
-            return this.listVotesById(id).then((listVotesByIdResult: any[]) => {
-                result.value = listVotesByIdResult.length;
-                return result;
+            return new Item(result.name, result.description, result.quadrant, result.creator).setId(result.id).setAngle(result.angle).setTimestamp(result.timestamp);
+        }).then((result: Item) => {
+            return this.listVotesById(id).then((listVotesByIdResult: Vote[]) => {
+                return result.setValue(listVotesByIdResult);
             });
         });
     }
 
-    private listVotes(): Promise<any[]> {
+    private listVotes(): Promise<Vote[]> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
-            return collection.find({})
-                .toArray().then((result: any[]) => {
-                    db.close();
-                    return result;
-                });
+            return collection.find({}).toArray().then((result: Vote[]) => {
+                return result.map(x => new Vote(x.id, x.emailAddress, x.isUpVote));
+            });
         });
     }
 
-    private listVotesById(id: string): Promise<any[]> {
+    private listVotesById(id: string): Promise<Vote[]> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
             return collection.find({
                 id: id
-            })
-                .toArray().then((result: any[]) => {
-                    db.close();
-                    return result;
-                });
+            }).toArray().then((result: Vote[]) => {
+                return result.map(x => new Vote(x.id, x.emailAddress, x.isUpVote));
+            });
         });
     }
 
@@ -143,30 +125,4 @@ export class DataService {
         });
     }
 
-    private getInstanceOfItem(title: string, description: string, quadrant: string, emailAddress: string): any {
-        return {
-            id: this.generateId(),
-            name: title,
-            quadrant: quadrant,
-            angle: this.generateAngle(),
-            description: description,
-            creator: emailAddress,
-            timestamp: Date.now()
-        };
-    }
-
-    private generateAngle(): number {
-        return Math.random() * 90
-    }
-
-    private generateId(): string {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
-            + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
 }

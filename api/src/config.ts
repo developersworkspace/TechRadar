@@ -18,7 +18,7 @@ export var config = {
     },
     datastores: {
         mongo: {
-            uri: 'mongodb://mongo:27017/techradar'
+            uri: 'mongodb://mongo:27017/techradar_qa'
         }
     }
 };

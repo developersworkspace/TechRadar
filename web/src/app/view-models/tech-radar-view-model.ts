@@ -7,19 +7,20 @@ import 'rxjs/add/operator/catch';
 // Import environment configuration
 import { environment } from './../../environments/environment';
 
+// Imports models
+import { Blip } from './../models/blip';
+
 export class TechRadarViewModel {
 
-    public data: any = null;
-    public selectedItem: any = null;
-    public selectedItemDetails: any = null;
-
-
+    public data: Blip[] = null;
+    public selectedItem: Blip = null;
+    public selectedItemDetails: Blip = null;
 
     constructor(private http: Http) {
         this.loadData();
     }
 
-    public onClick_DataPoint(item: any) {
+    public onClick_DataPoint(item: Blip) {
         this.selectedItem = item;
     }
 
@@ -33,7 +34,7 @@ export class TechRadarViewModel {
                 headers: headers
             })
             .map((res: Response) => res.json())
-            .subscribe((result: any) => {
+            .subscribe((result: Boolean) => {
                 this.loadData();
             }, (err: Error) => {
 
@@ -50,7 +51,7 @@ export class TechRadarViewModel {
                 headers: headers
             })
             .map((res: Response) => res.json())
-            .subscribe((result: any) => {
+            .subscribe((result: Boolean) => {
                 this.loadData();
             }, (err: Error) => {
 
@@ -65,7 +66,7 @@ export class TechRadarViewModel {
             headers: headers
         })
             .map((res: Response) => res.json())
-            .subscribe((result: any) => {
+            .subscribe((result: Blip[]) => {
                 this.data = result;
             }, (err: Error) => {
 
