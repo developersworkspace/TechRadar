@@ -40,12 +40,12 @@ export class DataService {
         });
     }
 
-    create(title: string, description: string, quadrant: string): Promise<Boolean> {
+    create(title: string, description: string, quadrant: string, emailAddress: string): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('items');
 
-            return collection.insertOne(this.getInstanceOfItem(title, description, quadrant)).then((result: any) => {
+            return collection.insertOne(this.getInstanceOfItem(title, description, quadrant, emailAddress)).then((result: any) => {
                 db.close();
                 return true;
             });
@@ -143,13 +143,15 @@ export class DataService {
         });
     }
 
-    private getInstanceOfItem(title: string, description: string, quadrant: string): any {
+    private getInstanceOfItem(title: string, description: string, quadrant: string, emailAddress: string): any {
         return {
             id: this.generateId(),
             name: title,
             quadrant: quadrant,
             angle: this.generateAngle(),
-            description: description
+            description: description,
+            creator: emailAddress,
+            timestamp: Date.now()
         };
     }
 

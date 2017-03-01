@@ -48,9 +48,20 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
         return;
     }
 
+    let decodedToken: any = null;
+
+    try {
+        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+            issuer: config.oauth.jwtIssuer
+        });
+    } catch (err) {
+        res.status(401).end();
+        return;
+    }
+
     let dataService = new DataService();
 
-    dataService.create(req.body.title, req.body.description, req.body.quadrant).then((result: Boolean) => {
+    dataService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress).then((result: Boolean) => {
         res.json(result);
     });
 });

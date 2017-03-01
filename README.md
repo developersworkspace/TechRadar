@@ -4,7 +4,7 @@
 
 ## What is 'TechRadar' about?
 
-Description....
+Visualize the latest trends recommended by the community.
 
 ## Installation
 
