@@ -8,7 +8,7 @@ export class Item {
     timestamp: number;
     value: number;
 
-    constructor(public name: string, public description: string, public quadrant: string, public creator: string) {
+    constructor(public name: string, public description: string, public quadrant: string, public creator: string, public userId: number) {
         this.id = this.generateId();
         this.angle = this.generateAngle();
         this.timestamp = Date.now();

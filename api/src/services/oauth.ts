@@ -42,7 +42,7 @@ export class OAuth {
                         }
                     }, (error, response, userResponse: any) => {
                         if (!error && response.statusCode == 200) {
-                            resolve(this.buildJWT(type, accessTokenResponse.access_token, JSON.parse(userResponse).email));
+                            resolve(this.buildJWT(type, accessTokenResponse.access_token, JSON.parse(userResponse).email, JSON.parse(userResponse).id));
                         } else {
                             reject();
                         }
@@ -54,8 +54,8 @@ export class OAuth {
         });
     }
 
-    private buildJWT(type: string, accessToken: string, emailAddress: string): string {
-        let token = jwt.sign({ type: type, accessToken: accessToken, emailAddress: emailAddress }, config.oauth.jwtSecret, {
+    private buildJWT(type: string, accessToken: string, emailAddress: string, userId: number): string {
+        let token = jwt.sign({ type: type, accessToken: accessToken, emailAddress: emailAddress, userId: userId }, config.oauth.jwtSecret, {
             //expiresIn: 3600,
             audience: this.getProvider(type).clientId,
             issuer: config.oauth.jwtIssuer,

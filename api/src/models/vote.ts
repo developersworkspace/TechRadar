@@ -1,6 +1,6 @@
 export class Vote {
 
-    constructor(public id: string, public emailAddress: string, public isUpVote: Boolean) {
+    constructor(public id: string, public emailAddress: string, public userId: number, public isUpVote: Boolean) {
 
     }
 }

@@ -61,7 +61,7 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
 
     let dataService = new DataService();
 
-    dataService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress).then((result: Boolean) => {
+    dataService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
@@ -96,7 +96,7 @@ router.post('/upvote', (req: Request, res: Response, next: Function) => {
 
     let dataService = new DataService();
 
-    dataService.upvote(req.body.id, decodedToken.emailAddress).then((result: Boolean) => {
+    dataService.upvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
@@ -130,7 +130,7 @@ router.post('/downvote', (req: Request, res: Response, next: Function) => {
 
     let dataService = new DataService();
 
-    dataService.downvote(req.body.id, decodedToken.emailAddress).then((result: Boolean) => {
+    dataService.downvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
