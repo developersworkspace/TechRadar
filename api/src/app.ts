@@ -1,6 +1,8 @@
 // Imports
 import express = require("express");
 import bodyParser = require('body-parser');
+import expressWinston = require('express-winston');
+
 
 // Imports middleware
 import * as cors from 'cors';
@@ -8,6 +10,9 @@ import * as cors from 'cors';
 // Imports routes
 import blipRoute = require('./routes/blip');
 import oauthRoute = require('./routes/oauth');
+
+// Imports logger
+import { logger } from './logger';
 
 export class WebApi {
 
@@ -20,6 +25,11 @@ export class WebApi {
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: false }));
         app.use(cors());
+        app.use(expressWinston.logger({
+            winstonInstance: logger,
+            meta: false,
+            msg: 'HTTP Request: {{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}'
+        }));
     }
 
     private configureRoutes(app: express.Express) {
@@ -40,4 +50,4 @@ export class WebApi {
 let port = 3000;
 let api = new WebApi(express(), port);
 api.run();
-console.info(`listening on ${port}`);
+logger.info(`Listening on ${port}`);
