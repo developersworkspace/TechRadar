@@ -18,7 +18,7 @@ npm install -g gulp
 # Install 'angular-cli' node package
 npm install -g @angular/cli
 
-# Clone 'WorldOfRations' repository
+# Clone 'TechRadar' repository
 git clone https://github.com/developersworkspace/TechRadar.git
 
 # Change directory to 'web'
