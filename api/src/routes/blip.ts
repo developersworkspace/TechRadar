@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
 // Imports services
-import { DataService } from './../services/data';
+import { BlipService } from './../services/blip';
 
 // Imports configuration
 import { config } from './../config';
@@ -12,17 +12,17 @@ import { config } from './../config';
 let router = express.Router();
 
 /**
- * @api {get} /data RETRIEVE TECH RADAR DATA
- * @apiName Data
- * @apiGroup Data
+ * @api {get} /blip/list RETRIEVE LIST OF BLIPS
+ * @apiName BlipList
+ * @apiGroup Blip
  * 
  * @apiSuccess {Object} response Empty.
  * 
  */
 router.get('/', (req: Request, res: Response, next: Function) => {
-    let dataService = new DataService();
+    let blipService = new BlipService();
 
-    dataService.list().then((items: any[]) => {
+    blipService.list().then((items: any[]) => {
         let data = {
             quadrants: ["Techniques", "Tools", "Platforms", "Languages & Frameworks"],
             items: items
@@ -33,9 +33,9 @@ router.get('/', (req: Request, res: Response, next: Function) => {
 });
 
 /**
- * @api {post} /data/create CREATE NEW ITEM ON TECH RADAR
- * @apiName DataCreate
- * @apiGroup Data
+ * @api {post} /blip/create CREATE A NEW BLIP
+ * @apiName BlipCreate
+ * @apiGroup Blip
  * 
  * @apiSuccess {Object} response Empty.
  * 
@@ -59,18 +59,18 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let dataService = new DataService();
+    let blipService = new BlipService();
 
-    dataService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
 
 
 /**
- * @api {post} /data/upvote UP VOTE
- * @apiName DataUpVote
- * @apiGroup Data
+ * @api {post} /blip/upvote UP VOTE A BLIP
+ * @apiName BlipUpVote
+ * @apiGroup Blip
  * 
  * @apiSuccess {Object} response Empty.
  * 
@@ -94,17 +94,17 @@ router.post('/upvote', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let dataService = new DataService();
+    let blipService = new BlipService();
 
-    dataService.upvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
+    blipService.upvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
 
 /**
- * @api {post} /data/downvote DOWN VOTE
- * @apiName DataDownVote
- * @apiGroup Data
+ * @api {post} /blip/downvote DOWN VOTE A BLIP
+ * @apiName BlipDownVote
+ * @apiGroup Blip
  * 
  * @apiSuccess {Object} response Empty.
  * 
@@ -128,7 +128,7 @@ router.post('/downvote', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let dataService = new DataService();
+    let dataService = new BlipService();
 
     dataService.downvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);

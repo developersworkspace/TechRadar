@@ -1,7 +1,7 @@
 // Imports models
 import { Vote } from './vote';
 
-export class Item {
+export class Blip {
 
     id: string;
     angle: number;
@@ -14,22 +14,22 @@ export class Item {
         this.timestamp = Date.now();
     }
 
-    public setId(id: string): Item {
+    public setId(id: string): Blip {
         this.id = id;
         return this;
     }
 
-    public setAngle(angle: number): Item {
+    public setAngle(angle: number): Blip {
         this.angle = angle;
         return this;
     }
 
-    public setTimestamp(timestamp: number): Item {
+    public setTimestamp(timestamp: number): Blip {
         this.timestamp = timestamp;
         return this;
     }
 
-    public setValue(votes: Vote[]): Item {
+    public setValue(votes: Vote[]): Blip {
 
         let newValue = votes.filter(x => x.id == this.id && x.isUpVote).length - votes.filter(x => x.id == this.id && !x.isUpVote).length;
 

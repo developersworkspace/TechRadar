@@ -3,28 +3,28 @@ import * as mongo from 'mongodb';
 import { Db } from 'mongodb';
 
 // Imports models
-import { Item } from './../models/item';
+import { Blip } from './../models/blip';
 import { Vote } from './../models/vote';
 
 // Imports configuration
 import { config } from './../config';
 
-export class DataService {
+export class BlipService {
 
     constructor() {
 
     }
 
-    list(): Promise<Item[]> {
+    list(): Promise<Blip[]> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            let collection = db.collection('items');
+            let collection = db.collection('blips');
             return collection.find({}).toArray()
-        }).then((result: Item[]) => {
-            return result.map(x => new Item(x.name, x.description, x.quadrant, x.creator, x.userId).setId(x.id).setAngle(x.angle).setTimestamp(x.timestamp));
-        }).then((listItemsResult: Item[]) => {
+        }).then((result: Blip[]) => {
+            return result.map(x => new Blip(x.name, x.description, x.quadrant, x.creator, x.userId).setId(x.id).setAngle(x.angle).setTimestamp(x.timestamp));
+        }).then((listIBlipsResult: Blip[]) => {
             return this.listVotes().then((listVotesResult: Vote[]) => {
-                return listItemsResult.map(x => x.setValue(listVotesResult));
+                return listIBlipsResult.map(x => x.setValue(listVotesResult));
             });
         });
     }
@@ -32,8 +32,8 @@ export class DataService {
     create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            let collection = db.collection('items');
-            return collection.insertOne(new Item(title, description, quadrant, emailAddress, userId)).then((result: any) => {
+            let collection = db.collection('blips');
+            return collection.insertOne(new Blip(title, description, quadrant, emailAddress, userId)).then((result: any) => {
                 db.close();
                 return true;
             });
@@ -56,16 +56,16 @@ export class DataService {
         });
     }
 
-    find(id: string): Promise<Item> {
+    find(id: string): Promise<Blip> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            let collection = db.collection('items');
+            let collection = db.collection('blips');
             return collection.findOne({
                 id: id
             });
         }).then((result: any) => {
-            return new Item(result.name, result.description, result.quadrant, result.creator, result.userId).setId(result.id).setAngle(result.angle).setTimestamp(result.timestamp);
-        }).then((result: Item) => {
+            return new Blip(result.name, result.description, result.quadrant, result.creator, result.userId).setId(result.id).setAngle(result.angle).setTimestamp(result.timestamp);
+        }).then((result: Blip) => {
             return this.listVotesById(id).then((listVotesByIdResult: Vote[]) => {
                 return result.setValue(listVotesByIdResult);
             });

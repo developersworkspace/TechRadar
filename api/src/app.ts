@@ -6,7 +6,7 @@ import bodyParser = require('body-parser');
 import * as cors from 'cors';
 
 // Imports routes
-import dataRoute = require('./routes/data');
+import blipRoute = require('./routes/blip');
 import oauthRoute = require('./routes/oauth');
 
 export class WebApi {
@@ -23,7 +23,7 @@ export class WebApi {
     }
 
     private configureRoutes(app: express.Express) {
-        app.use("/api/data", dataRoute);
+        app.use("/api/blip", blipRoute);
         app.use("/api/oauth", oauthRoute);
     }
 
