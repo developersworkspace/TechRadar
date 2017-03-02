@@ -13,23 +13,23 @@ import { Blip } from './../models/blip';
 export class TechRadarViewModel {
 
     public data: Blip[] = null;
-    public selectedItem: Blip = null;
-    public selectedItemDetails: Blip = null;
+    public selectedBlip: Blip = null;
+    public selectedBlipDetails: Blip = null;
 
     constructor(private http: Http) {
         this.loadData();
     }
 
     public onClick_DataPoint(item: Blip) {
-        this.selectedItem = item;
+        this.selectedBlip = item;
     }
 
     public onClick_UpVote() {
         let headers = new Headers();
         headers.append('jwt', localStorage.getItem('jwt'));
 
-        this.http.post(environment.apiUri + '/data/upvote', {
-            id: this.selectedItem.id
+        this.http.post(environment.apiUri + '/blip/upvote', {
+            id: this.selectedBlip.id
         }, {
                 headers: headers
             })
@@ -45,8 +45,8 @@ export class TechRadarViewModel {
         let headers = new Headers();
         headers.append('jwt', localStorage.getItem('jwt'));
 
-        this.http.post(environment.apiUri + '/data/downvote', {
-            id: this.selectedItem.id
+        this.http.post(environment.apiUri + '/blip/downvote', {
+            id: this.selectedBlip.id
         }, {
                 headers: headers
             })
@@ -62,7 +62,7 @@ export class TechRadarViewModel {
         let headers = new Headers();
         headers.append('jwt', localStorage.getItem('jwt'));
 
-        this.http.get(environment.apiUri + '/data', {
+        this.http.get(environment.apiUri + '/blip/list', {
             headers: headers
         })
             .map((res: Response) => res.json())

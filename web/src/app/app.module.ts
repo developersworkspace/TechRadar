@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { TechRadarCompoment } from 'techradar-chart';
 import { HomeComponent } from './home/home.component';
 import { RadarComponent } from './radar/radar.component';
-import { NewItemComponent } from './new-item/new-item.component';
+import { NewBlipComponent } from './new-blip/new-blip.component';
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
 
@@ -25,8 +25,8 @@ let router = RouterModule.forRoot([
     component: RadarComponent
   },
   {
-    path: 'newitem',
-    component: NewItemComponent
+    path: 'newblip',
+    component: NewBlipComponent
   },
   {
     path: 'login',
@@ -41,7 +41,7 @@ let router = RouterModule.forRoot([
     TechRadarCompoment,
     HomeComponent,
     RadarComponent,
-    NewItemComponent,
+    NewBlipComponent,
     LoginComponent,
     NavComponent
   ],

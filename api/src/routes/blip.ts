@@ -19,7 +19,7 @@ let router = express.Router();
  * @apiSuccess {Object} response Empty.
  * 
  */
-router.get('/', (req: Request, res: Response, next: Function) => {
+router.get('/list', (req: Request, res: Response, next: Function) => {
     let blipService = new BlipService();
 
     blipService.list().then((items: any[]) => {
