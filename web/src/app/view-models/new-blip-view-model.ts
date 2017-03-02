@@ -1,3 +1,6 @@
+// Imports
+import { JwtHelper } from 'angular2-jwt';
+
 // Imports for HTTP requests
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -7,7 +10,10 @@ import 'rxjs/add/operator/catch';
 // Import environment configuration
 import { environment } from './../../environments/environment';
 
-export class NewItemViewModel {
+// Imports models
+import { Blip } from './../models/blip';
+
+export class NewBlipViewModel {
 
     title: string;
     description: string;
@@ -15,8 +21,18 @@ export class NewItemViewModel {
 
     message: string;
 
-    constructor(private http: Http) {
+    isAuthenticated: Boolean = false;
+    decodedToken: any = null;
 
+    constructor(private http: Http) {
+        let token = localStorage.getItem("jwt");
+        if (token) {
+            this.isAuthenticated = true;
+            this.decodedToken = new JwtHelper().decodeToken(token);
+        } else {
+            this.isAuthenticated = false;
+            this.decodedToken = null;
+        }
     }
 
     public submit() {
@@ -41,7 +57,7 @@ export class NewItemViewModel {
         let headers = new Headers();
         headers.append('jwt', localStorage.getItem('jwt'));
 
-        this.http.post(environment.apiUri + '/data/create', {
+        this.http.post(environment.apiUri + '/blip/create', {
             title: this.title,
             description: this.description,
             quadrant: this.quadrant

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { NewItemComponent } from './new-item.component';
+import { NewBlipComponent } from './new-blip.component';
 
-describe('SuggestComponent', () => {
-  let component: NewItemComponent;
-  let fixture: ComponentFixture<NewItemComponent>;
+describe('NewBlipComponent', () => {
+  let component: NewBlipComponent;
+  let fixture: ComponentFixture<NewBlipComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewItemComponent ]
+      declarations: [ NewBlipComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewItemComponent);
+    fixture = TestBed.createComponent(NewBlipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

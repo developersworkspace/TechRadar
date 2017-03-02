@@ -7,7 +7,7 @@ import { config } from './../config';
 
 export class OAuth {
 
-    public getRedirectUrlToProvider(type: string) {
+    public getRedirectUrlToProvider(type: string): string {
         switch (type) {
             case 'github':
                 return `https://github.com/login/oauth/authorize?client_id=${config.oauth.providers.github.clientId}&redirect_uri=${config.oauth.providers.github.redirectUri}&scope=user:email&state=hello_world&allow_signup=true`;
@@ -17,7 +17,7 @@ export class OAuth {
     }
 
 
-    public getAccessTokenFromProvider(type: string, code: string) {
+    public getAccessTokenFromProvider(type: string, code: string): Promise<string> {
         return new Promise((resolve: Function, reject: Function) => {
             request({
                 method: 'post',
@@ -42,7 +42,7 @@ export class OAuth {
                         }
                     }, (error, response, userResponse: any) => {
                         if (!error && response.statusCode == 200) {
-                            resolve(this.buildJWT(type, accessTokenResponse.access_token, JSON.parse(userResponse).email));
+                            resolve(this.buildJWT(type, accessTokenResponse.access_token, JSON.parse(userResponse).email, JSON.parse(userResponse).id));
                         } else {
                             reject();
                         }
@@ -54,8 +54,8 @@ export class OAuth {
         });
     }
 
-    private buildJWT(type: string, accessToken: string, emailAddress: string) {
-        let token = jwt.sign({ type: type, accessToken: accessToken, emailAddress: emailAddress }, config.oauth.jwtSecret, {
+    private buildJWT(type: string, accessToken: string, emailAddress: string, userId: number): string {
+        let token = jwt.sign({ type: type, accessToken: accessToken, emailAddress: emailAddress, userId: userId }, config.oauth.jwtSecret, {
             //expiresIn: 3600,
             audience: this.getProvider(type).clientId,
             issuer: config.oauth.jwtIssuer,
@@ -65,7 +65,7 @@ export class OAuth {
         return token;
     }
 
-    private getAccessTokenUriForProvider(type: string) {
+    private getAccessTokenUriForProvider(type: string): string {
         switch (type) {
             case 'github':
                 return 'https://github.com/login/oauth/access_token';
@@ -74,7 +74,7 @@ export class OAuth {
         }
     }
 
-    private getProvider(type: string) {
+    private getProvider(type: string): any {
         switch (type) {
             case 'github':
                 return config.oauth.providers.github
