@@ -12,7 +12,7 @@ import { Blip } from './../models/blip';
 
 export class TechRadarViewModel {
 
-    public data: Blip[] = null;
+    public data: any = null;
     public selectedBlip: Blip = null;
     public selectedBlipDetails: Blip = null;
 
@@ -66,7 +66,7 @@ export class TechRadarViewModel {
             headers: headers
         })
             .map((res: Response) => res.json())
-            .subscribe((result: Blip[]) => {
+            .subscribe((result: any) => {
                 this.data = result;
             }, (err: Error) => {
 
