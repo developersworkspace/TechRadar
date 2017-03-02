@@ -1,4 +1,13 @@
-<h1>
-  {{title}}
-</h1>
-<techradar-chart [data]="data"></techradar-chart>
+<app-nav>
+</app-nav>
+<div class="container">
+    <router-outlet></router-outlet>
+    <hr>
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright &copy; Developer's Workspace 2017</p>
+            </div>
+        </div>
+    </footer>
+</div>

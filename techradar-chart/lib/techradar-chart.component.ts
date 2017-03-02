@@ -223,7 +223,7 @@ export class TechRadarCompoment {
           }
         }
       })
-      .attr('r', 5)
+      .attr('r', 4)
       .attr('fill', (d: any) => {
         return this.findQuadrantColor(d);
       })
@@ -251,10 +251,13 @@ export class TechRadarCompoment {
     this.svg.selectAll('.icon')
       .remove();
 
+    // Remove all header labels
+    this.svg.selectAll('.header-label')
+      .remove();
+
     if (this.dataset == null || this.dataset.items == null || this.dataset.items.length == 0) {
       return;
     }
-
 
     this.svg
       .append('text')
