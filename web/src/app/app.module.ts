@@ -13,7 +13,6 @@ import { RadarComponent } from './radar/radar.component';
 import { NewBlipComponent } from './new-blip/new-blip.component';
 import { LoginComponent } from './login/login.component';
 import { NavComponent } from './nav/nav.component';
-import { AdminComponent } from './admin/admin.component';
 
 
 let router = RouterModule.forRoot([
@@ -32,10 +31,6 @@ let router = RouterModule.forRoot([
   {
     path: 'login',
     component: LoginComponent
-  },
-  {
-    path: 'admin',
-    component: AdminComponent
   }
 ]);
 
@@ -48,8 +43,7 @@ let router = RouterModule.forRoot([
     RadarComponent,
     NewBlipComponent,
     LoginComponent,
-    NavComponent,
-    AdminComponent
+    NavComponent
   ],
   imports: [
     BrowserModule,
