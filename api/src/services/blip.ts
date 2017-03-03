@@ -20,6 +20,10 @@ export class BlipService {
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
             return collection.find({}).toArray()
+                .then((result: Blip[]) => {
+                    db.close();
+                    return result;
+                });
         }).then((result: Blip[]) => {
             return result.map(x => new Blip(x.name, x.description, x.quadrant, x.creator, x.userId).setId(x.id).setAngle(x.angle).setTimestamp(x.timestamp));
         }).then((listIBlipsResult: Blip[]) => {
@@ -34,7 +38,11 @@ export class BlipService {
         let blip = new Blip(title, description, quadrant, emailAddress, userId);
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
-            return collection.insertOne(blip);
+            return collection.insertOne(blip)
+                .then((result: any) => {
+                    db.close();
+                    return result;
+                });
         }).then((result: any) => {
             return blip;
         });
@@ -46,6 +54,9 @@ export class BlipService {
             let collection = db.collection('blips');
             return collection.remove({
                 id: id
+            }).then((result: any) => {
+                db.close();
+                return result;
             });
         }).then((result: any) => {
             return this.removeVotes(id);
@@ -76,6 +87,9 @@ export class BlipService {
             let collection = db.collection('blips');
             return collection.findOne({
                 id: id
+            }).then((result: any) => {
+                db.close();
+                return result;
             });
         }).then((result: any) => {
             return new Blip(result.name, result.description, result.quadrant, result.creator, result.userId).setId(result.id).setAngle(result.angle).setTimestamp(result.timestamp);
@@ -90,9 +104,13 @@ export class BlipService {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
-            return collection.find({}).toArray().then((result: Vote[]) => {
-                return result.map(x => new Vote(x.id, x.emailAddress, x.userId, x.isUpVote));
-            });
+            return collection.find({}).toArray()
+                .then((result: Vote[]) => {
+                    db.close();
+                    return result;
+                });
+        }).then((result: Vote[]) => {
+            return result.map(x => new Vote(x.id, x.emailAddress, x.userId, x.isUpVote));
         });
     }
 
@@ -102,9 +120,13 @@ export class BlipService {
             let collection = db.collection('votes');
             return collection.find({
                 id: id
-            }).toArray().then((result: Vote[]) => {
-                return result.map(x => new Vote(x.id, x.emailAddress, x.userId, x.isUpVote));
-            });
+            }).toArray()
+                .then((result: Vote[]) => {
+                    db.close();
+                    return result;
+                });
+        }).then((result: Vote[]) => {
+            return result.map(x => new Vote(x.id, x.emailAddress, x.userId, x.isUpVote));
         });
     }
 
@@ -125,7 +147,7 @@ export class BlipService {
         });
     }
 
-     private removeVotes(id: string): Promise<Boolean> {
+    private removeVotes(id: string): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
