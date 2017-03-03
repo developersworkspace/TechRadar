@@ -1,0 +1,28 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp --cwd ./../api build:dev & gulp ts & mocha --timeout=5000 ./api/**/*.js",
+    "cover": "gulp --cwd ./../api build:dev & gulp ts & istanbul cover node_modules/mocha/bin/_mocha --root ./../api/src ./api/**/*.js & gulp --cwd ./../api clean:js & gulp clean",
+    "clean": "gulp --cwd ./../api clean:js & gulp clean"
+  },
+  "author": "Barend Erasmus",
+  "license": "MIT",
+  "dependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.38",
+    "chai": "^3.5.0",
+    "express": "^4.14.1",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-typescript": "^3.1.4",
+    "mocha": "^3.2.0",
+    "proxyquire": "^1.7.11",
+    "siege": "^0.2.0",
+    "supertest": "^3.0.0",
+    "ts-node": "^2.1.0",
+    "typescript": "^2.1.5"
+  }
+}
