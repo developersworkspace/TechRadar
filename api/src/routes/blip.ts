@@ -37,7 +37,11 @@ router.get('/list', (req: Request, res: Response, next: Function) => {
  * @apiName BlipCreate
  * @apiGroup Blip
  * 
- * @apiSuccess {Object} response Empty.
+ * @apiParam {String} title Empty.
+ * @apiParam {String} description Empty.
+ * @apiParam {String} quadrant Empty.
+ * 
+ * @apiSuccess {Boolean} response Empty.
  * 
  */
 router.post('/create', (req: Request, res: Response, next: Function) => {
@@ -72,7 +76,9 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
  * @apiName BlipUpVote
  * @apiGroup Blip
  * 
- * @apiSuccess {Object} response Empty.
+ * @apiParam {String} id Empty.
+ * 
+ * @apiSuccess {Boolean} response Empty.
  * 
  */
 router.post('/upvote', (req: Request, res: Response, next: Function) => {
@@ -106,7 +112,9 @@ router.post('/upvote', (req: Request, res: Response, next: Function) => {
  * @apiName BlipDownVote
  * @apiGroup Blip
  * 
- * @apiSuccess {Object} response Empty.
+ * @apiParam {String} id Empty.
+ * 
+ * @apiSuccess {Boolean} response Empty.
  * 
  */
 router.post('/downvote', (req: Request, res: Response, next: Function) => {
