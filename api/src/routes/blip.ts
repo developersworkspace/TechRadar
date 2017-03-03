@@ -6,6 +6,9 @@ import * as jwt from 'jsonwebtoken';
 // Imports services
 import { BlipService } from './../services/blip';
 
+// Imports models
+import { Blip } from './../models/blip';
+
 // Imports configuration
 import { config } from './../config';
 
@@ -65,7 +68,7 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
 
     let blipService = new BlipService();
 
-    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Blip) => {
         res.json(result);
     });
 });

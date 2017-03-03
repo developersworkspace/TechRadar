@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUri: 'http://dechradar.developersworkspace.co.za/api'
 };

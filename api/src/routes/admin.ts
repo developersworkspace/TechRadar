@@ -6,6 +6,9 @@ import * as jwt from 'jsonwebtoken';
 // Imports services
 import { BlipService } from './../services/blip';
 
+// Imports models
+import { Blip } from './../models/blip';
+
 // Imports configuration
 import { config } from './../config';
 
@@ -84,20 +87,57 @@ router.post('/blip/create', (req: Request, res: Response, next: Function) => {
 
     let blipService = new BlipService();
 
-    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Blip) => {
         let tasks: Promise<Boolean>[] = [];
 
         for (let i = 0; i < req.body.votes; i++) {
             let fakeEmailAddress = generateId();
             let fakeUserId = Math.floor(Math.random() * 10000000);
 
-            let task = blipService.downvote(req.body.id, fakeEmailAddress, fakeUserId);
+            let task = blipService.upvote(result.id, fakeEmailAddress, fakeUserId);
 
             tasks.push(task);
         }
 
         return Promise.all(tasks);
     }).then((result: Boolean[]) => {
+        res.json(true);
+    });
+});
+
+
+/**
+ * @api {post} /admin/blip/delete DELETE A BLIP
+ * @apiName BlipDelete
+ * @apiGroup Blip
+ * 
+ * @apiParam {String} id Empty.
+ * 
+ * @apiSuccess {Boolean} response Empty.
+ * 
+ */
+router.post('/blip/delete', (req: Request, res: Response, next: Function) => {
+    let token = req.get('jwt');
+
+    if (!token) {
+        res.status(401).end();
+        return;
+    }
+
+    let decodedToken: any = null;
+
+    try {
+        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+            issuer: config.oauth.jwtIssuer
+        });
+    } catch (err) {
+        res.status(401).end();
+        return;
+    }
+
+    let blipService = new BlipService();
+
+    blipService.delete(req.body.id).then((result: Boolean) => {
         res.json(true);
     });
 });

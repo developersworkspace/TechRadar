@@ -1,4 +1,5 @@
 export let config = {
+    production: true,
     web: {
         uri: 'http://techradar.developersworkspace.co.za'
     },

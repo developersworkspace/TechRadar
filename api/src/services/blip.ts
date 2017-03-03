@@ -29,14 +29,28 @@ export class BlipService {
         });
     }
 
-    public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Boolean> {
+    public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Blip> {
+        let MongoClient = mongo.MongoClient;
+        let blip = new Blip(title, description, quadrant, emailAddress, userId);
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('blips');
+            return collection.insertOne(blip);
+        }).then((result: any) => {
+            return blip;
+        });
+    }
+
+    public delete(id: string): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
-            return collection.insertOne(new Blip(title, description, quadrant, emailAddress, userId)).then((result: any) => {
-                db.close();
-                return true;
+            return collection.remove({
+                id: id
             });
+        }).then((result: any) => {
+            return this.removeVotes(id);
+        }).then((result: any) => {
+            return true;
         });
     }
 
@@ -111,6 +125,20 @@ export class BlipService {
         });
     }
 
+     private removeVotes(id: string): Promise<Boolean> {
+        let MongoClient = mongo.MongoClient;
+        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('votes');
+
+            return collection.remove({
+                id: id
+            }).then((result: any) => {
+                db.close();
+                return true;
+            });
+        });
+    }
+
     private removeVote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
@@ -126,5 +154,4 @@ export class BlipService {
             });
         });
     }
-
 }
