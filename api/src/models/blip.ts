@@ -3,10 +3,10 @@ import { Vote } from './vote';
 
 export class Blip {
 
-    id: string;
-    angle: number;
-    timestamp: number;
-    value: number;
+    public id: string;
+    public angle: number;
+    public timestamp: number;
+    public value: number;
 
     constructor(public name: string, public description: string, public quadrant: string, public creator: string, public userId: number) {
         this.id = this.generateId();

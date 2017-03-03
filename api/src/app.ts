@@ -3,13 +3,13 @@ import express = require("express");
 import bodyParser = require('body-parser');
 import expressWinston = require('express-winston');
 
-
 // Imports middleware
 import * as cors from 'cors';
 
 // Imports routes
 import blipRoute = require('./routes/blip');
 import oauthRoute = require('./routes/oauth');
+import adminRoute = require('./routes/admin');
 
 // Imports logger
 import { logger } from './logger';
@@ -35,6 +35,7 @@ export class WebApi {
     private configureRoutes(app: express.Express) {
         app.use("/api/blip", blipRoute);
         app.use("/api/oauth", oauthRoute);
+        app.use("/api/admin", adminRoute);
     }
 
     public getApp() {

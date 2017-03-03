@@ -15,7 +15,7 @@ export class BlipService {
 
     }
 
-    list(): Promise<Blip[]> {
+    public list(): Promise<Blip[]> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
@@ -29,7 +29,7 @@ export class BlipService {
         });
     }
 
-    create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Boolean> {
+    public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Boolean> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
@@ -40,7 +40,7 @@ export class BlipService {
         });
     }
 
-    upvote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
+    public upvote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
         return this.removeVote(id, emailAddress, userId).then((removeVoteResult: Boolean) => {
             return this.addVote(id, emailAddress, userId, true);
         }).then((addVoteResult: Boolean) => {
@@ -48,7 +48,7 @@ export class BlipService {
         });
     }
 
-    downvote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
+    public downvote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
         return this.removeVote(id, emailAddress, userId).then((removeVoteResult: Boolean) => {
             return this.addVote(id, emailAddress, userId, false);
         }).then((addVoteResult: Boolean) => {
@@ -56,7 +56,7 @@ export class BlipService {
         });
     }
 
-    find(id: string): Promise<Blip> {
+    public find(id: string): Promise<Blip> {
         let MongoClient = mongo.MongoClient;
         return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');

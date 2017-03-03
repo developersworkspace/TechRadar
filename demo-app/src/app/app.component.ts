@@ -9,7 +9,7 @@ export class AppComponent {
   title = 'TechRadar Demo App by Developer\'s Workspace';
 
   public data: any = null;
-  public selectedItem: any = null;
+  public selectedBlip: any = null;
 
   constructor() {
 
@@ -30,15 +30,15 @@ export class AppComponent {
   }
 
   onHover(item: any) {
-    //this.selectedItem = item;
+    //this.selectedBlip = item;
   }
 
   onMouseLeave(item: any) {
-    //this.selectedItem = null;
+    //this.selectedBlip = null;
   }
 
   onClick(item: any) {
-    this.selectedItem = item;
+    this.selectedBlip = item;
   }
 
   getItems() {

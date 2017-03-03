@@ -2,7 +2,7 @@ FROM node:6.9.4
 
 RUN npm install pm2 -g
 
-WORKDIR ./WorldOfRations/api
+WORKDIR ./TechRadar/api
 
 COPY ./dist ./
 RUN npm install

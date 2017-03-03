@@ -1,9 +1,9 @@
 export let config = {
     web: {
-        uri: 'http://localhost:4200'
+        uri: 'http://techradar.developersworkspace.co.za'
     },
     api: {
-        uri: 'http://localhost:3000/api'
+        uri: 'http://techradar.developersworkspace.co.za/api'
     },
     oauth: {
         jwtSecret: 'techradar_secret',
@@ -18,10 +18,10 @@ export let config = {
     },
     datastores: {
         mongo: {
-            uri: 'mongodb://mongo:27017/techradar_dev'
+            uri: 'mongodb://mongo:27017/techradar_prod'
         }
     },
     logging: {
-        path: './'
+        path: '/logs/'
     }
 };

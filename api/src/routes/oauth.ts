@@ -10,12 +10,28 @@ import { config } from './../config';
 
 let router = express.Router();
 
+
+/**
+ * @api {get} /oauth/github Redirect to Github
+ * @apiName OAuthGithub
+ * @apiGroup OAuth
+ * 
+ */
 router.get('/github', (req: Request, res: Response, next: Function) => {
     let oauthService = new OAuth();
 
     res.redirect(oauthService.getRedirectUrlToProvider('github'));
 });
 
+
+/**
+ * @api {get} /oauth/github/callback Callback for Github
+ * @apiName OAuthGithubCallback
+ * @apiGroup OAuth
+ * 
+ * @apiParam {String} code Empty.
+ *  
+ */
 router.get('/github/callback', (req: Request, res: Response, next: Function) => {
     let oauthService = new OAuth();
 
