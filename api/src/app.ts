@@ -3,7 +3,6 @@ import express = require("express");
 import bodyParser = require('body-parser');
 import expressWinston = require('express-winston');
 
-
 // Imports middleware
 import * as cors from 'cors';
 
