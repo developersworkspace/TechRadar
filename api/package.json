@@ -5,23 +5,27 @@
   "main": "index.js",
   "scripts": {
     "docs": "apidoc -i ./src/ -o docs/",
-    "build": "gulp build",
-    "start": "gulp ts & node ./src/app.js"
+    "build": "gulp build:prod",
+    "start": "gulp build:dev & node ./src/app.js"
   },
   "author": "Barend Erasmus",
   "license": "MIT",
   "dependencies": {
     "@types/mongodb": "^2.1.41",
+    "@types/node": "^7.0.5",
+    "@types/winston": "^2.2.0",
     "body-parser": "^1.16.1",
     "cors": "^2.8.1",
     "express": "^4.14.1",
     "express-winston": "^2.3.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
+    "gulp-rename": "^1.2.2",
     "gulp-typescript": "^3.1.5",
     "jsonwebtoken": "^7.3.0",
     "mongodb": "^2.2.24",
     "request": "^2.79.0",
+    "run-sequence": "^1.2.2",
     "typescript": "^2.2.1",
     "winston": "^2.3.1"
   }
