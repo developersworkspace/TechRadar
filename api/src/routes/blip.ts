@@ -1,5 +1,7 @@
 // Imports
 import { Express, Request, Response } from "express";
+import * as mongo from 'mongodb';
+import { Db } from 'mongodb';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
@@ -23,7 +25,7 @@ let router = express.Router();
  * 
  */
 router.get('/list', (req: Request, res: Response, next: Function) => {
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.list().then((items: any[]) => {
         let data = {
@@ -66,10 +68,16 @@ router.post('/create', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Blip) => {
-        res.json(result);
+        if (result == null) {
+            res.status(400).json({
+                message: 'Blip with this title already exist'
+            })
+        } else {
+            res.json(result);
+        }
     });
 });
 
@@ -103,7 +111,7 @@ router.post('/upvote', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.upvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
@@ -139,11 +147,19 @@ router.post('/downvote', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.downvote(req.body.id, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
         res.json(result);
     });
 });
+
+
+function getBlipService() {
+    let mongoClient = mongo.MongoClient;
+    let blipService = new BlipService(mongoClient);
+
+    return blipService;
+}
 
 export = router;

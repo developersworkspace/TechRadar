@@ -1,5 +1,7 @@
 // Imports
 import { Express, Request, Response } from "express";
+import * as mongo from 'mongodb';
+import { Db } from 'mongodb';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
@@ -41,7 +43,7 @@ router.get('/blip/list', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.list().then((items: any[]) => {
         let data = {
@@ -85,7 +87,7 @@ router.post('/blip/create', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Blip) => {
         let tasks: Promise<Boolean>[] = [];
@@ -135,7 +137,7 @@ router.post('/blip/delete', (req: Request, res: Response, next: Function) => {
         return;
     }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.delete(req.body.id).then((result: Boolean) => {
         res.json(true);
@@ -151,6 +153,13 @@ function generateId(): string {
         + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+}
+
+function getBlipService() {
+    let mongoClient = mongo.MongoClient;
+    let blipService = new BlipService(mongoClient);
+
+    return blipService;
 }
 
 export = router;

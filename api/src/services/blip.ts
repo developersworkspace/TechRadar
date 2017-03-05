@@ -11,13 +11,13 @@ import { config } from './../config';
 
 export class BlipService {
 
-    constructor() {
+
+    constructor(private mongoClient: mongo.MongoClient) {
 
     }
 
     public list(): Promise<Blip[]> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
             return collection.find({}).toArray()
                 .then((result: Blip[]) => {
@@ -34,23 +34,27 @@ export class BlipService {
     }
 
     public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Blip> {
-        let MongoClient = mongo.MongoClient;
-        let blip = new Blip(title, description, quadrant, emailAddress, userId);
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
-            let collection = db.collection('blips');
-            return collection.insertOne(blip)
-                .then((result: any) => {
-                    db.close();
-                    return result;
+        return this.findByTitle(title).then((result: Blip) => {
+            if (result == null) {
+                let blip = new Blip(title, description, quadrant, emailAddress, userId);
+                return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+                    let collection = db.collection('blips');
+                    return collection.insertOne(blip)
+                        .then((result: any) => {
+                            db.close();
+                            return blip;
+                        });
                 });
-        }).then((result: any) => {
-            return blip;
+            } else {
+                return null;
+            }
+        }).then((result: Blip) => {
+            return result;
         });
     }
 
     public delete(id: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
             return collection.remove({
                 id: id
@@ -82,8 +86,7 @@ export class BlipService {
     }
 
     public find(id: string): Promise<Blip> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
             return collection.findOne({
                 id: id
@@ -100,9 +103,32 @@ export class BlipService {
         });
     }
 
+    private findByTitle(title: string) {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            let collection = db.collection('blips');
+            return collection.findOne({
+                name: title
+            }).then((result: any) => {
+                db.close();
+                return result;
+            });
+        }).then((result: any) => {
+            if (result == null)
+                return null;
+
+            return new Blip(result.name, result.description, result.quadrant, result.creator, result.userId).setId(result.id).setAngle(result.angle).setTimestamp(result.timestamp);
+        }).then((result: Blip) => {
+            if (result == null)
+                return null;
+
+            return this.listVotesById(result.id).then((listVotesByIdResult: Vote[]) => {
+                return result.setValue(listVotesByIdResult);
+            });
+        });
+    }
+
     private listVotes(): Promise<Vote[]> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
             return collection.find({}).toArray()
                 .then((result: Vote[]) => {
@@ -115,8 +141,7 @@ export class BlipService {
     }
 
     private listVotesById(id: string): Promise<Vote[]> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
             return collection.find({
                 id: id
@@ -131,8 +156,7 @@ export class BlipService {
     }
 
     private addVote(id: string, emailAddress: string, userId: number, isUpVote: Boolean): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
 
             return collection.insertOne({
@@ -148,8 +172,7 @@ export class BlipService {
     }
 
     private removeVotes(id: string): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
 
             return collection.remove({
@@ -162,8 +185,7 @@ export class BlipService {
     }
 
     private removeVote(id: string, emailAddress: string, userId: number): Promise<Boolean> {
-        let MongoClient = mongo.MongoClient;
-        return MongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('votes');
 
             return collection.remove({

@@ -1,3 +1,6 @@
+// Imports
+import { JwtHelper } from 'angular2-jwt';
+
 // Imports for HTTP requests
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -16,7 +19,20 @@ export class TechRadarViewModel {
     public selectedBlip: Blip = null;
     public selectedBlipDetails: Blip = null;
 
+    isAuthenticated: Boolean = false;
+    decodedToken: any = null;
+
     constructor(private http: Http) {
+
+        let token = localStorage.getItem("jwt");
+        if (token) {
+            this.isAuthenticated = true;
+            this.decodedToken = new JwtHelper().decodeToken(token);
+        } else {
+            this.isAuthenticated = false;
+            this.decodedToken = null;
+        }
+
         this.loadData();
     }
 

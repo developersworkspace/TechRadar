@@ -64,12 +64,16 @@ export class NewBlipViewModel {
         }, {
                 headers: headers
             })
-            .map((res: Response) => res.json())
-            .subscribe((result: any) => {
+            .map((res: Response) => {
+                return res.json();
+            })
+            .subscribe((result: Error) => {
                 this.title = null;
                 this.description = null;
                 this.quadrant = null;
                 window.location.href = '/radar';
+            }, (err: Response) => {
+                this.message = err.json().message;
             });
     }
 }
