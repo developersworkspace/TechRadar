@@ -25,23 +25,23 @@ let router = express.Router();
  * 
  */
 router.get('/blip/list', (req: Request, res: Response, next: Function) => {
-    let token = req.get('jwt');
+    // let token = req.get('jwt');
 
-    if (!token) {
-        res.status(401).end();
-        return;
-    }
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let decodedToken: any = null;
+    // let decodedToken: any = null;
 
-    try {
-        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
-            issuer: config.oauth.jwtIssuer
-        });
-    } catch (err) {
-        res.status(401).end();
-        return;
-    }
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
     let blipService = getBlipService();
 
@@ -69,27 +69,27 @@ router.get('/blip/list', (req: Request, res: Response, next: Function) => {
  * 
  */
 router.post('/blip/create', (req: Request, res: Response, next: Function) => {
-    let token = req.get('jwt');
+    // let token = req.get('jwt');
 
-    if (!token) {
-        res.status(401).end();
-        return;
-    }
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let decodedToken: any = null;
+    // let decodedToken: any = null;
 
-    try {
-        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
-            issuer: config.oauth.jwtIssuer
-        });
-    } catch (err) {
-        res.status(401).end();
-        return;
-    }
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
     let blipService = getBlipService();
 
-    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Blip) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, 'admin@developersworkspace.co.za', 0).then((result: Blip) => {
         let tasks: Promise<Boolean>[] = [];
 
         for (let i = 0; i < req.body.votes; i++) {
@@ -119,23 +119,23 @@ router.post('/blip/create', (req: Request, res: Response, next: Function) => {
  * 
  */
 router.post('/blip/delete', (req: Request, res: Response, next: Function) => {
-    let token = req.get('jwt');
+    // let token = req.get('jwt');
 
-    if (!token) {
-        res.status(401).end();
-        return;
-    }
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let decodedToken: any = null;
+    // let decodedToken: any = null;
 
-    try {
-        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
-            issuer: config.oauth.jwtIssuer
-        });
-    } catch (err) {
-        res.status(401).end();
-        return;
-    }
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
     let blipService = getBlipService();
 
