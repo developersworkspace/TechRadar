@@ -16,6 +16,22 @@ export class BlipService {
 
     }
 
+    public clean() {
+        let database: Db = null;
+
+        return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
+            database = db;
+
+            let collection = database.collection('blips');
+            return collection.remove({});
+        }).then((result: any) => {
+            let collection = database.collection('votes');
+            return collection.remove({});
+        }).then((result: any) => {
+            database.close();
+        });
+    }
+
     public list(): Promise<Blip[]> {
         return this.mongoClient.connect(config.datastores.mongo.uri).then((db: Db) => {
             let collection = db.collection('blips');
@@ -34,6 +50,11 @@ export class BlipService {
     }
 
     public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Blip> {
+
+        if (!title || !description || !quadrant || !emailAddress || !userId) {
+            return Promise.resolve(null);
+        }
+
         return this.findByTitle(title).then((result: Blip) => {
             if (result == null) {
                 let blip = new Blip(title, description, quadrant, emailAddress, userId);
@@ -58,14 +79,20 @@ export class BlipService {
             let collection = db.collection('blips');
             return collection.remove({
                 id: id
-            }).then((result: any) => {
+            }).then((result: mongo.WriteOpResult) => {
                 db.close();
                 return result;
             });
-        }).then((result: any) => {
-            return this.removeVotes(id);
-        }).then((result: any) => {
-            return true;
+        }).then((result: mongo.WriteOpResult) => {
+            if (result.result.n == 0) {
+                return false;
+            }
+
+            return this.removeVotes(id).then((result: Boolean) => {
+                return true;
+            });
+        }).then((result: Boolean) => {
+            return result;
         });
     }
 
@@ -177,9 +204,9 @@ export class BlipService {
 
             return collection.remove({
                 id: id
-            }).then((result: any) => {
+            }).then((result: mongo.WriteOpResult) => {
                 db.close();
-                return true;
+                return result.result.n == 0 ? false : true;
             });
         });
     }
