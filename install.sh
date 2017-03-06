@@ -73,3 +73,6 @@ curl -o /etc/nginx/nginx.conf https://raw.githubusercontent.com/developersworksp
 
 # Restart NGINX
 systemctl restart nginx
+
+# Open 8181 port
+sudo ufw allow 8181/tcp
