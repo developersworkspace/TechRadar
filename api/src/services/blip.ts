@@ -50,8 +50,8 @@ export class BlipService {
     }
 
     public create(title: string, description: string, quadrant: string, emailAddress: string, userId: number): Promise<Blip> {
-
-        if (!title || !description || !quadrant || !emailAddress || !userId) {
+        if (this.isEmpty(title) || this.isEmpty(description) || this.isEmpty(quadrant) || this.isEmpty(emailAddress) || this.isEmpty(userId)) {
+            console.log(userId);
             return Promise.resolve(null);
         }
 
@@ -128,6 +128,10 @@ export class BlipService {
                 return result.setValue(listVotesByIdResult);
             });
         });
+    }
+
+    private isEmpty(str) {
+        return (!str || 0 === str.length);
     }
 
     private findByTitle(title: string) {

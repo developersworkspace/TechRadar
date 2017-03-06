@@ -89,7 +89,12 @@ router.post('/blip/create', (req: Request, res: Response, next: Function) => {
 
     let blipService = getBlipService();
 
-    blipService.create(req.body.title, req.body.description, req.body.quadrant, 'admin@developersworkspace.co.za', 0).then((result: Blip) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, 'admin@developersworkspace.co.za', 1).then((result: Blip) => {
+
+        if (result == null) {
+            return Promise.resolve([]);
+        }
+
         let tasks: Promise<Boolean>[] = [];
 
         for (let i = 0; i < req.body.votes; i++) {
