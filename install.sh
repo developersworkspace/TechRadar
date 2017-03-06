@@ -39,6 +39,15 @@ npm install
 # Build 'api'
 npm run build
 
+# Change directory to 'admin'
+cd ./../admin
+
+# Install node packages for 'admin'
+npm install
+
+# Build 'admin'
+npm run build
+
 # Change to root of repository
 cd ./../
 
