@@ -1,4 +1,5 @@
 export let config = {
+    production: false,
     web: {
         uri: 'http://localhost:4200'
     },

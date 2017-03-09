@@ -1,10 +1,15 @@
 // Imports
 import { Express, Request, Response } from "express";
+import * as mongo from 'mongodb';
+import { Db } from 'mongodb';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
 // Imports services
 import { BlipService } from './../services/blip';
+
+// Imports models
+import { Blip } from './../models/blip';
 
 // Imports configuration
 import { config } from './../config';
@@ -20,25 +25,25 @@ let router = express.Router();
  * 
  */
 router.get('/blip/list', (req: Request, res: Response, next: Function) => {
-    let token = req.get('jwt');
+    // let token = req.get('jwt');
 
-    if (!token) {
-        res.status(401).end();
-        return;
-    }
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let decodedToken: any = null;
+    // let decodedToken: any = null;
 
-    try {
-        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
-            issuer: config.oauth.jwtIssuer
-        });
-    } catch (err) {
-        res.status(401).end();
-        return;
-    }
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
     blipService.list().then((items: any[]) => {
         let data = {
@@ -64,40 +69,82 @@ router.get('/blip/list', (req: Request, res: Response, next: Function) => {
  * 
  */
 router.post('/blip/create', (req: Request, res: Response, next: Function) => {
-    let token = req.get('jwt');
+    // let token = req.get('jwt');
 
-    if (!token) {
-        res.status(401).end();
-        return;
-    }
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let decodedToken: any = null;
+    // let decodedToken: any = null;
 
-    try {
-        decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
-            issuer: config.oauth.jwtIssuer
-        });
-    } catch (err) {
-        res.status(401).end();
-        return;
-    }
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
 
-    let blipService = new BlipService();
+    let blipService = getBlipService();
 
-    blipService.create(req.body.title, req.body.description, req.body.quadrant, decodedToken.emailAddress, decodedToken.userId).then((result: Boolean) => {
+    blipService.create(req.body.title, req.body.description, req.body.quadrant, 'admin@developersworkspace.co.za', 1).then((result: Blip) => {
+
+        if (result == null) {
+            return Promise.resolve([]);
+        }
+
         let tasks: Promise<Boolean>[] = [];
 
         for (let i = 0; i < req.body.votes; i++) {
             let fakeEmailAddress = generateId();
             let fakeUserId = Math.floor(Math.random() * 10000000);
 
-            let task = blipService.downvote(req.body.id, fakeEmailAddress, fakeUserId);
+            let task = blipService.upvote(result.id, fakeEmailAddress, fakeUserId);
 
             tasks.push(task);
         }
 
         return Promise.all(tasks);
     }).then((result: Boolean[]) => {
+        res.json(true);
+    });
+});
+
+
+/**
+ * @api {post} /admin/blip/delete DELETE A BLIP
+ * @apiName BlipDelete
+ * @apiGroup Blip
+ * 
+ * @apiParam {String} id Empty.
+ * 
+ * @apiSuccess {Boolean} response Empty.
+ * 
+ */
+router.post('/blip/delete', (req: Request, res: Response, next: Function) => {
+    // let token = req.get('jwt');
+
+    // if (!token) {
+    //     res.status(401).end();
+    //     return;
+    // }
+
+    // let decodedToken: any = null;
+
+    // try {
+    //     decodedToken = jwt.verify(token, config.oauth.jwtSecret, {
+    //         issuer: config.oauth.jwtIssuer
+    //     });
+    // } catch (err) {
+    //     res.status(401).end();
+    //     return;
+    // }
+
+    let blipService = getBlipService();
+
+    blipService.delete(req.body.id).then((result: Boolean) => {
         res.json(true);
     });
 });
@@ -111,6 +158,13 @@ function generateId(): string {
         + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
         + Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+}
+
+function getBlipService() {
+    let mongoClient = mongo.MongoClient;
+    let blipService = new BlipService(mongoClient);
+
+    return blipService;
 }
 
 export = router;

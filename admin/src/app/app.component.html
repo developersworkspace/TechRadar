@@ -1,3 +1,56 @@
-<h1>
-  {{title}}
-</h1>
+<app-nav>
+</app-nav>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Quadrant</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="data != null">
+      <tr *ngFor="let item of data.items">
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.quadrant}}</td>
+        <td>{{item.value}}</td>
+        <td>
+          <button class="btn btn-danger" (click)="onClick_Delete(item)">Delete</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="newBlip.title" />
+        </td>
+        <td>
+          <textarea class="form-control" [(ngModel)]="newBlip.description" rows="5"></textarea>
+        </td>
+        <td>
+          <select class="form-control" [(ngModel)]="newBlip.quadrant">
+            <option [value]="'Techniques'">Techniques</option>
+            <option [value]="'Tools'">Tools</option>
+            <option [value]="'Platforms'">Platforms</option>
+            <option [value]="'Languages & Frameworks'">Languages & Frameworks</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="newBlip.votes" />
+        </td>
+        <td>
+          <button class="btn btn-success" (click)="onClick_Submit()">Submit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Copyright &copy; Developer's Workspace 2017</p>
+      </div>
+    </div>
+  </footer>
+</div>

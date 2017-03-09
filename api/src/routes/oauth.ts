@@ -20,7 +20,12 @@ let router = express.Router();
 router.get('/github', (req: Request, res: Response, next: Function) => {
     let oauthService = new OAuth();
 
-    res.redirect(oauthService.getRedirectUrlToProvider('github'));
+    if (config.production) {
+        res.redirect(oauthService.getRedirectUrlToProvider('github'));
+    } else {
+        let jwt = oauthService.buildJWT('github', null, 'hello@example.com', 1);
+        res.redirect(`${config.web.uri}/login?token=${jwt}`);
+    }
 });
 
 
