@@ -8,12 +8,12 @@ export let config = {
     },
     oauth: {
         jwtSecret: 'techradar_secret',
-        jwtIssuer: 'techradar.developersworkspace.co.za',
+        jwtIssuer: 'yourdomain.com',
         providers: {
             github: {
-                clientId: '6e7d85d80257ee842525',
-                clientSecret: '558b485c9662e71109b2d935288e7eed608617f9',
-                redirectUri: 'http://techradar.developersworkspace.co.za/api/oauth/github/callback'
+                clientId: 'yourclientid',
+                clientSecret: 'yourclientsecret',
+                redirectUri: 'http://yourdomain.com/api/oauth/github/callback'
             }
         }
     },
