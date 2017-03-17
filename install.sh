@@ -1,7 +1,7 @@
 # -- BUILD AND INSTALL Tech Radar --
 
 # Declare varibles
-$domain=$1;
+domain=$1
 
 # Update machine package indexes
 sudo apt-get update
@@ -26,6 +26,8 @@ git clone https://github.com/developersworkspace/TechRadar.git
 
 # Replace domain
 sed -i -- "s/yourdomain.com/$domain/g" ./TechRadar/web/src/environments/environment.prod.ts
+sed -i -- "s/yourdomain.com/$domain/g" ./TechRadar/admin/src/environments/environment.prod.ts
+sed -i -- "s/yourdomain.com/$domain/g" ./TechRadar/api/src/config.prod.ts
 sed -i -- "s/yourdomain.com/$domain/g" ./TechRadar/nginx.conf
 
 # Change directory to 'web'

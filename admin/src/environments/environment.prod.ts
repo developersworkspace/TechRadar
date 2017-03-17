@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUri: 'http://techradar.developersworkspace.co.za/api'
+  apiUri: 'http://yourdomain.com/api'
 };
