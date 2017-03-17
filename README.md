@@ -10,7 +10,7 @@ Visualize the latest trends recommended by the community.
 
 ### One-line Install
 
-`bash <(curl -s https://raw.githubusercontent.com/developersworkspace/TechRadar/master/install.sh)`
+`curl -s https://raw.githubusercontent.com/developersworkspace/TechRadar/master/install.sh | bash -s "yourdomain.com"`
 
 The MIT License (MIT)
 =====================
