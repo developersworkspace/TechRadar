@@ -9,7 +9,9 @@ TechRadar is a way to visualize trends in different aspects of technology. These
 ## Installation
 
 
+
 ### Running on your local machine
+
 
 
 #### Prerequisites
@@ -42,6 +44,7 @@ Change directory to the project you would like to run and the following command
 `npm start`
 
 ### One-line Install
+
 
 
 #### Prerequisites
