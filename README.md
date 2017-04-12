@@ -4,13 +4,50 @@
 
 ## What is 'TechRadar' about?
 
-Visualize the latest trends recommended by the community.
+TechRadar is a way to visualize trends in different aspects of technology. These aspects, 'Techniques', 'Tools', 'Platforms' and 'Languages and Frameworks', are displayed on a radar chart (as seen above) where their distance from the origin dictates their popularity.
 
 ## Installation
 
+### Running on your local machine
+
+#### Prerequisites
+
+* Local MongoDB instance
+* Host entry of '127.0.0.1 mongo'
+
+Clone this repository
+
+`git clone https://github.com/developersworkspace/TechRadar.git`
+
+Change to directory
+
+`cd TechRadar`
+
+Install node packages on all projects
+
+`cd api & npm install & cd ..`
+`cd web & npm install & cd ..`
+`cd admin & npm install & cd ..`
+`cd demo-app & npm install & cd ..`
+`cd tests & npm install & cd ..`
+
+Change directory to the project you would like to run and the following command
+
+`npm start`
+
 ### One-line Install
 
+#### Prerequisites
+
+* Docker
+
+Use the following command to run TechRadar in production.
+
 `curl -s https://raw.githubusercontent.com/developersworkspace/TechRadar/master/install.sh | bash -s "yourdomain.com"`
+
+Browse `http://yourdomain.com` for the web project.
+Browse `http://admin.yourdomain.com` for the admin project.
+Browse `http://yourdomain.com/api` for the api project.
 
 The MIT License (MIT)
 =====================
