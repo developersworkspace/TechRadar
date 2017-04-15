@@ -1,0 +1,9 @@
+{
+  "extends": "tslint:latest",
+  "defaultSeverity": "error",
+  "rules": {
+    "quotemark": "single",
+    "max-line-length": 150,
+    "no-unused-expression": false
+  }
+}

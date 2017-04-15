@@ -1,9 +1,10 @@
-import { Component, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+// Imports
+import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
   selector: 'techradar-chart',
-  templateUrl: './techradar-chart.component.html'
+  templateUrl: './techradar-chart.component.html',
 })
 export class TechRadarCompoment {
 
@@ -14,13 +15,13 @@ export class TechRadarCompoment {
   public radius: number = 300;
 
   @Output()
-  onHover = new EventEmitter();
+  public onHover = new EventEmitter();
 
   @Output()
-  onMouseLeave = new EventEmitter();
+  public onMouseLeave = new EventEmitter();
 
   @Output()
-  onClick = new EventEmitter();
+  public onClick = new EventEmitter();
 
   private dataset: any = null;
   private svg: any = null;
@@ -32,15 +33,14 @@ export class TechRadarCompoment {
 
   }
 
-  ngOnChanges(changes: any) {
+  public ngOnChanges(changes: any) {
 
     this.dataset = changes.data.currentValue;
 
     this.drawTechRadar();
   }
 
-
-  private drawTechRadar() {
+  private drawTechRadar(): void {
 
     this.margin = { top: 20, right: 250, bottom: 20, left: 250 };
     this.scale = d3.scaleLinear().range([this.radius, 0]).domain([0, 100]);
@@ -61,7 +61,7 @@ export class TechRadarCompoment {
 
   }
 
-  private drawAxis() {
+  private drawAxis(): void {
 
     // Remove all axis
     this.svg.selectAll('.axis')
@@ -86,7 +86,7 @@ export class TechRadarCompoment {
       .attr('stroke', 'black');
   }
 
-  private drawBoundaryLines() {
+  private drawBoundaryLines(): void {
 
     // Remove all boundary lines
     this.svg.selectAll('.boundary-line')
@@ -129,7 +129,7 @@ export class TechRadarCompoment {
       .attr('stroke', 'black');
   }
 
-  private drawBoundaryText() {
+  private drawBoundaryText(): void {
 
     // Remove all boundary text
     this.svg.selectAll('.boundary-text')
@@ -141,7 +141,6 @@ export class TechRadarCompoment {
       .attr('x', this.radius + this.margin.left + 5)
       .attr('y', this.radius + this.margin.top - this.scale(75) - 5)
       .text('Adopt');
-
 
     // Draw 'Trial' boundary text
     this.svg.append('text')
@@ -165,13 +164,13 @@ export class TechRadarCompoment {
       .text('Hold');
   }
 
-  private drawPoints() {
+  private drawPoints(): void {
 
     // Remove all points
     this.svg.selectAll('.point')
       .remove();
 
-    if (this.dataset == null || this.dataset.items == null || this.dataset.items.length == 0) {
+    if (this.dataset === null || this.dataset.items === null || this.dataset.items.length === 0) {
       return;
     }
 
@@ -183,9 +182,9 @@ export class TechRadarCompoment {
       .attr('class', 'point')
       .attr('cx', (d: any) => {
 
-        let value = Math.cos(this.toRadians(d.angle)) * this.scale(d.value);
+        const value = Math.cos(this.toRadians(d.angle)) * this.scale(d.value);
 
-        let quadrant = this.findQuadrant(d);
+        const quadrant = this.findQuadrant(d);
 
         switch (quadrant) {
           case 1: {
@@ -204,9 +203,9 @@ export class TechRadarCompoment {
       })
       .attr('cy', (d: any) => {
 
-        let value = Math.sin(this.toRadians(d.angle)) * this.scale(d.value);
+        const value = Math.sin(this.toRadians(d.angle)) * this.scale(d.value);
 
-        let quadrant = this.findQuadrant(d);
+        const quadrant = this.findQuadrant(d);
 
         switch (quadrant) {
           case 1: {
@@ -241,7 +240,7 @@ export class TechRadarCompoment {
       });
   }
 
-  private drawLegend() {
+  private drawLegend(): void {
 
     // Remove all labels
     this.svg.selectAll('.labels')
@@ -255,7 +254,7 @@ export class TechRadarCompoment {
     this.svg.selectAll('.header-label')
       .remove();
 
-    if (this.dataset == null || this.dataset.items == null || this.dataset.items.length == 0) {
+    if (this.dataset === null || this.dataset.items === null || this.dataset.items.length === 0) {
       return;
     }
 
@@ -275,7 +274,6 @@ export class TechRadarCompoment {
       .attr('font-size', '1.2em')
       .text(this.dataset.quadrants[1]);
 
-
     this.svg
       .append('text')
       .attr('class', 'header-label')
@@ -292,10 +290,9 @@ export class TechRadarCompoment {
       .attr('font-size', '1.2em')
       .text(this.dataset.quadrants[3]);
 
-
     // Draw labels for quadrant 1
     this.svg.selectAll('.label.quadrant1')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[0]))
       .enter()
       .append('text')
       .attr('class', 'label quadrant1')
@@ -314,7 +311,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 2
     this.svg.selectAll('.label.quadrant2')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[1]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[1]))
       .enter()
       .append('text')
       .attr('class', 'label quadrant2')
@@ -333,7 +330,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 3
     this.svg.selectAll('.label.quadrant3')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[2]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[2]))
       .enter()
       .append('text')
       .attr('class', 'label quadrant3')
@@ -352,7 +349,7 @@ export class TechRadarCompoment {
 
     // Draw labels for quadrant 4
     this.svg.selectAll('.label.quadrant4')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[3]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[3]))
       .enter()
       .append('text')
       .attr('class', 'label quadrant4')
@@ -369,10 +366,9 @@ export class TechRadarCompoment {
         return 'item-' + d.id;
       });
 
-
     // Draw icons for quadrant 1
     this.svg.selectAll('.icon.quadrant1')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[0]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[0]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant1')
@@ -401,7 +397,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 2
     this.svg.selectAll('.icon.quadrant2')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[1]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[1]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant2')
@@ -430,7 +426,7 @@ export class TechRadarCompoment {
 
     // Draw icons for quadrant 3
     this.svg.selectAll('.icon.quadrant3')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[2]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[2]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant3')
@@ -457,10 +453,9 @@ export class TechRadarCompoment {
         this.onClick.emit(d);
       });
 
-
     // Draw icons for quadrant 4
     this.svg.selectAll('.icon.quadrant4')
-      .data(this.dataset.items.filter(x => x.quadrant == this.dataset.quadrants[3]))
+      .data(this.dataset.items.filter((x) => x.quadrant === this.dataset.quadrants[3]))
       .enter()
       .append('circle')
       .attr('class', 'icon quadrant4')
@@ -489,7 +484,7 @@ export class TechRadarCompoment {
 
   }
 
-  private on_mouseover(item: any) {
+  private on_mouseover(item: any): void {
 
     if (item == null) {
       return;
@@ -502,7 +497,7 @@ export class TechRadarCompoment {
     d3.select('#item-' + item.id + '.label').attr('fill', this.findQuadrantColor(item));
   }
 
-  private on_mouseout(item: any) {
+  private on_mouseout(item: any): void {
 
     if (item == null) {
       return;
@@ -515,13 +510,13 @@ export class TechRadarCompoment {
     d3.select('#item-' + item.id + '.label').attr('fill', 'black');
   }
 
-  private findQuadrantColor(item: any) {
+  private findQuadrantColor(item: any): string {
 
     if (item == null) {
       return 'black';
     }
 
-    let quadrant = this.findQuadrant(item);
+    const quadrant = this.findQuadrant(item);
 
     switch (quadrant) {
       case 1: {
@@ -539,25 +534,25 @@ export class TechRadarCompoment {
     }
   }
 
-  private findQuadrant(item: any) {
-    if (this.dataset.quadrants.indexOf(item.quadrant) == 0) {
+  private findQuadrant(item: any): number {
+    if (this.dataset.quadrants.indexOf(item.quadrant) === 0) {
       return 1;
-    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 1) {
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) === 1) {
       return 2;
-    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 2) {
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) === 2) {
       return 3;
-    } else if (this.dataset.quadrants.indexOf(item.quadrant) == 3) {
+    } else if (this.dataset.quadrants.indexOf(item.quadrant) === 3) {
       return 4;
     }
 
     throw new Error('Could not find specified quadrant.');
   }
 
-  private toDegrees(angle: number) {
+  private toDegrees(angle: number): number {
     return angle * (180 / Math.PI);
   }
 
-  private toRadians(degrees: number) {
+  private toRadians(degrees: number): number {
     return degrees * Math.PI / 180;
-  };
+  }
 }
